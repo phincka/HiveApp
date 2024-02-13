@@ -1,4 +1,4 @@
-package com.example.hiveapp.ui.theme.screens.Home
+package com.example.hiveapp.ui.theme.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

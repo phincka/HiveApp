@@ -13,4 +13,7 @@ interface HiveDao {
 
     @Query("SELECT * FROM hive_table")
     fun getAll(): Flow<List<Hive>>
+
+    @Query("SELECT * FROM hive_table WHERE id = :id")
+    fun getHive(id: Int): Flow<List<Hive>>
 }

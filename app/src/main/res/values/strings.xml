@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">HiveApp</string>
+
+    <!-- Home screen start -->
+    <string name="home_top_bar_title">HiveApp</string>
+    <string name="home_floating_action_button">Dodaj ul</string>
+    <string name="home_no_hives">Brak dostępnych uli. Musisz najpierw dodać ul.</string>
+    <!-- Home screen end -->
+
+    <!-- Hive screen start -->
+    <string name="hive_top_bar_title">Ul</string>
+    <string name="home_no_hive">Ul o podanym ID nie istnieje</string>
+    <string name="hive_tab_name_summary">Podsumowanie</string>
+    <string name="hive_tab_name_info">Informacje</string>
+    <string name="hive_tab_name_queen">O matce</string>
+    <string name="hive_nav_edit_queen">Edytuj matkę</string>
+    <string name="hive_nav_edit_hive">Edytuj ul</string>
+    <string name="hive_nav_remove_hive">Usuń!</string>
+    <string name="hive_remove_modal_title">Usuń ul</string>
+    <string name="hive_remove_modal_text">Czy na pewno chcesz usunąć ul?</string>
+    <!-- Hive screen end -->
+
+    <!-- Create hive screen start -->
+    <string name="create_hive_title">Dodaj nowy ul</string>
+    <string name="create_hive_form_title">Informacje o ulu</string>
+    <string name="create_hive_form_name">Nazwa ula</string>
+    <string name="create_hive_form_family_type">Typ rodziny</string>
+    <string name="create_hive_form_type">Rodzaj ula</string>
+    <string name="create_hive_form_button">Utwórz ul</string>
+    <!-- Create hive screen start -->
 </resources>

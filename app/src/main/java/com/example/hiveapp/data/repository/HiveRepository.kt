@@ -13,6 +13,9 @@ class HiveRepository(
         return hiveDao.getAll()
     }
 
+    fun getHive(id: Int): Flow<List<Hive>> {
+        return hiveDao.getHive(id)
+    }
     suspend fun insert(hive: Hive) = withContext(Dispatchers.IO) {
         hiveDao.insert(hive)
     }
