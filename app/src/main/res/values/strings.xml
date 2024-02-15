@@ -8,12 +8,13 @@
     <!-- Home screen end -->
 
     <!-- Hive screen start -->
-    <string name="hive_top_bar_title">Ul</string>
+    <string name="hive_top_bar_title">Ul: </string>
     <string name="home_no_hive">Ul o podanym ID nie istnieje</string>
     <string name="hive_tab_name_summary">Podsumowanie</string>
     <string name="hive_tab_name_info">Informacje</string>
     <string name="hive_tab_name_queen">O matce</string>
     <string name="hive_nav_add_geo">Dodaj lokalizacje</string>
+    <string name="hive_nav_update_geo">Zmień lokalizacje</string>
     <string name="hive_nav_edit_hive">Edytuj ul</string>
     <string name="hive_nav_remove_hive">Usuń!</string>
     <string name="hive_remove_modal_title">Usuń ul</string>
@@ -27,13 +28,37 @@
     <string name="create_hive_form_name">Nazwa ula</string>
     <string name="create_hive_form_family_type">Typ rodziny</string>
     <string name="create_hive_form_type">Rodzaj ula</string>
+    <string name="create_hive_form_queen_line">Linia</string>
+    <string name="create_hive_form_queen_year">Oznaczenie matki</string>
+    <string name="create_hive_form_queen_state">Stan</string>
+    <string name="create_hive_form_queen_note">Notatka</string>
     <string name="create_hive_form_button">Utwórz ul</string>
-    <!-- Create hive screen end -->
 
+    <!-- Create hive screen end -->
 
     <!-- Create hive screen start -->
+    <string name="add_hive_location_title">Dodaj lokalizacje</string>
+    <string name="add_hive_location_snackbar_update">Zmieniono położenie ula</string>
+    <string name="add_hive_location_snackbar_create">Dodano nową lokalizację ula</string>
+    <string name="add_hive_location_snackbar_close">Zamknij</string>
+    <string name="add_hive_location_marker_title">Ul: </string>
+    <string name="add_hive_location_marker_snippet">Najlepszy zasięg lotu pszczoły: 1,5km.</string>
+    <!-- Create hive screen end -->
+
+    <!-- Notifications channels start -->
     <string name="notification_channel_title">Główny kanał powiadomień</string>
     <string name="notification_channel_desscription">Lorem impsum</string>
-    <!-- Create hive screen end -->
+    <!-- Notifications channels start -->
+
+    <!-- Notifications start -->
+    <string name="notification_created_hive_title">Utworzono ul!</string>
+    <string name="notification_created_hive_description">Twój ul został utworzony ale wymaga jeszcze konfiguracji. Przejdź do ula aby dodać lokalizacje.</string>
+
+    <string name="notification_geo_hive_title">Możesz dodać lokalizacje do ula</string>
+    <string name="notification_geo_hive_description">Możesz dodać lokalizacje do ula. Nie czekaj zrób to teraz.</string>
+
+    <string name="notification_no_permission">Brak uprawnień do wyświetalnia powiadomień</string>
+    <!-- Notifications start-->
+
 
 </resources>

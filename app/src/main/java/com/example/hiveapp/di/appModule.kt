@@ -5,6 +5,7 @@ import com.example.hiveapp.data.database.HiveDatabase
 import com.example.hiveapp.data.repository.HiveRepository
 import com.example.hiveapp.notifications.NotificationChannels
 import com.example.hiveapp.notifications.NotificationService
+import com.example.hiveapp.ui.theme.screens.addHiveLocation.AddHiveLocationViewModel
 import com.example.hiveapp.ui.theme.screens.createEditHive.CreateEditHiveViewModel
 import com.example.hiveapp.ui.theme.screens.hive.HiveViewModel
 import com.example.hiveapp.ui.theme.screens.home.HomeViewModel
@@ -23,4 +24,5 @@ val appModule = module {
     viewModel { HomeViewModel(get()) }
     viewModel { HiveViewModel(get()) }
     viewModel { CreateEditHiveViewModel(get()) }
+    viewModel { AddHiveLocationViewModel(get()) }
 }

@@ -15,9 +15,9 @@ class NotificationService(
     private val notificationManager = NotificationManagerCompat.from(context)
     fun showCreateNotification() {
         val notification = NotificationCompat.Builder(context, HIVE_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("Utworzono ul!")
-            .setContentText("Twój ul został utworzony :)")
+            .setSmallIcon(R.drawable.bee)
+            .setContentTitle(context.getString(R.string.notification_created_hive_title))
+            .setContentText(context.getString(R.string.notification_created_hive_description))
             .build()
 
         if (ActivityCompat.checkSelfPermission(
@@ -25,7 +25,7 @@ class NotificationService(
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("ERR", "No notification perm")
+            Log.d("APP", context.getString(R.string.notification_no_permission))
             return
         }
         notificationManager.notify(1, notification)
@@ -33,9 +33,9 @@ class NotificationService(
 
     fun showGeoNotification() {
         val notification = NotificationCompat.Builder(context, HIVE_CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_launcher_background)
-            .setContentTitle("Możesz dodać lokalizacje do ula")
-            .setContentText("Możesz dodać lokalizacje do ula. Nie czekaj zrób to teraz.")
+            .setSmallIcon(R.drawable.bee)
+            .setContentTitle(context.getString(R.string.notification_geo_hive_title))
+            .setContentText(context.getString(R.string.notification_geo_hive_description))
             .build()
 
         if (ActivityCompat.checkSelfPermission(
@@ -43,7 +43,7 @@ class NotificationService(
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("ERR", "No notification perm")
+            Log.d("APP", context.getString(R.string.notification_no_permission))
             return
         }
         notificationManager.notify(2, notification)

@@ -15,6 +15,8 @@ data class Hive(
     var year: Int,
     val state: Int,
     val note: String,
+    val lat: Double,
+    val lng: Double,
     val created: Long,
     val edited: Long
 )

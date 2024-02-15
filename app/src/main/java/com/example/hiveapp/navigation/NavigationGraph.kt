@@ -4,6 +4,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.hiveapp.ui.theme.screens.addHiveLocation.AddHiveLocation
 import com.example.hiveapp.ui.theme.screens.createEditHive.CreateEditHiveScreen
 import com.example.hiveapp.ui.theme.screens.hive.HiveScreen
 import com.example.hiveapp.ui.theme.screens.home.HomeScreen
@@ -44,6 +45,17 @@ fun NavigationGraph(navController: NavHostController) {
                 HiveScreen(navController, id)
             }
         }
+
+        composable(
+            route = "${Screen.AddHiveLocation.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id")
+
+            if (id != null) {
+                AddHiveLocation(navController, id)
+            }
+        }
     }
 }
 
@@ -51,4 +63,5 @@ sealed class Screen(val route: String) {
     object Home : Screen("home")
     object Hive : Screen("hive")
     object CreateEditHive : Screen("create_edit_hive")
+    object AddHiveLocation : Screen("add_hive_location")
 }

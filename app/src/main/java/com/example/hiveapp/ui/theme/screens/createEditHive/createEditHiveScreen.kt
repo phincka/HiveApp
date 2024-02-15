@@ -37,9 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.Hive
+import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,6 +49,7 @@ import org.koin.androidx.compose.getViewModel
 fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: Int) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val createEditHiveViewModel: CreateEditHiveViewModel = getViewModel()
+    val notificationService = get<NotificationService>()
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
 
@@ -69,7 +72,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
         },
     ) { innerPadding ->
         val currentTimestamp = System.currentTimeMillis()
-        var hiveData: Hive by remember { mutableStateOf(Hive(0, 0, "", 0, 0, 0, "", 0, 0, "", currentTimestamp, currentTimestamp))}
+        var hiveData: Hive by remember { mutableStateOf(Hive(0, 0, "", 0, 0, 0, "", 0, 0, "", 0.0, 0.0, currentTimestamp, currentTimestamp))}
 
         var familyType by remember { mutableIntStateOf(hiveData.familyType) }
         var type by remember { mutableIntStateOf(hiveData.type) }
@@ -94,7 +97,6 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
-
             ) {
                 Text(
                     modifier = Modifier.fillMaxWidth(),
@@ -161,7 +163,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                     onValueChange = { newValue ->
                         hiveData = hiveData.copy(line = newValue)
                     },
-                    label = { Text("Linia") },
+                    label = { stringResource(R.string.create_hive_form_queen_line) },
                     singleLine = true,
                     keyboardActions = KeyboardActions(
                         onDone = {}
@@ -177,7 +179,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                     options = DataConstants.queenYear,
                     selected = year,
                     setSelected = { year = it },
-                    label = "Oznaczenie matki"
+                    label = stringResource(R.string.create_hive_form_queen_year)
                 )
 
                 ExposedDropdown(
@@ -186,7 +188,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                     options = DataConstants.queenState,
                     selected = state,
                     setSelected = { state = it },
-                    label = "Stan"
+                    label = stringResource(R.string.create_hive_form_queen_state)
                 )
 
                 TextField(
@@ -195,7 +197,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                     onValueChange = { newValue ->
                         hiveData = hiveData.copy(note = newValue)
                     },
-                    label = { Text("Notatka") },
+                    label = { Text(stringResource(R.string.create_hive_form_queen_note)) },
                     minLines = 5,
                     keyboardActions = KeyboardActions(
                         onDone = {}
@@ -221,9 +223,13 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                             year,
                             state,
                             hiveData.note,
+                            hiveData.lat,
+                            hiveData.lng,
                             hiveData.created,
                             hiveData.edited
                         ))
+
+                        notificationService.showCreateNotification()
 
                         navController.navigate(moveRoute)
                     }
