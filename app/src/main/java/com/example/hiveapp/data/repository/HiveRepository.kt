@@ -19,4 +19,12 @@ class HiveRepository(
     suspend fun insert(hive: Hive) = withContext(Dispatchers.IO) {
         hiveDao.insert(hive)
     }
+
+    suspend fun update(hive: Hive) = withContext(Dispatchers.IO ) {
+        hiveDao.update(hive)
+    }
+
+    suspend fun delete(hives: List<Hive>) = withContext(Dispatchers.IO) {
+        hiveDao.delete(hives)
+    }
 }

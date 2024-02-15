@@ -7,11 +7,14 @@ import androidx.room.PrimaryKey
 data class Hive(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val uId: Int,
-    var queenId: Int,
     val name: String,
     var type: Int,
-    val lastOverview: Int,
     val familyType: Int,
+    val breed: Int,
+    val line: String,
+    var year: Int,
+    val state: Int,
+    val note: String,
     val created: Long,
-    val edited: Long,
+    val edited: Long
 )

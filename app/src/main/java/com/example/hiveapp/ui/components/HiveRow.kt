@@ -28,7 +28,7 @@ fun HiveRow(hive: Hive, navController : NavController) {
     ){
         ListItem(
             headlineContent = { Text(hive.name) },
-            overlineContent = { Text("ID: ${hive.id}, QueenId: ${hive.queenId}") },
+            overlineContent = { Text("ID: ${hive.id}, QueenId: ${hive.breed}") },
             trailingContent = { Icon(
                 Icons.Filled.ArrowForward,
                 contentDescription = "Localized description",

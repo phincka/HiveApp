@@ -13,7 +13,7 @@
     <string name="hive_tab_name_summary">Podsumowanie</string>
     <string name="hive_tab_name_info">Informacje</string>
     <string name="hive_tab_name_queen">O matce</string>
-    <string name="hive_nav_edit_queen">Edytuj matkę</string>
+    <string name="hive_nav_add_geo">Dodaj lokalizacje</string>
     <string name="hive_nav_edit_hive">Edytuj ul</string>
     <string name="hive_nav_remove_hive">Usuń!</string>
     <string name="hive_remove_modal_title">Usuń ul</string>
@@ -22,10 +22,18 @@
 
     <!-- Create hive screen start -->
     <string name="create_hive_title">Dodaj nowy ul</string>
-    <string name="create_hive_form_title">Informacje o ulu</string>
+    <string name="create_hive_form_hive_title">Informacje o ulu</string>
+    <string name="create_hive_form_queen_title">Informacje o matce</string>
     <string name="create_hive_form_name">Nazwa ula</string>
     <string name="create_hive_form_family_type">Typ rodziny</string>
     <string name="create_hive_form_type">Rodzaj ula</string>
     <string name="create_hive_form_button">Utwórz ul</string>
+    <!-- Create hive screen end -->
+
+
     <!-- Create hive screen start -->
+    <string name="notification_channel_title">Główny kanał powiadomień</string>
+    <string name="notification_channel_desscription">Lorem impsum</string>
+    <!-- Create hive screen end -->
+
 </resources>

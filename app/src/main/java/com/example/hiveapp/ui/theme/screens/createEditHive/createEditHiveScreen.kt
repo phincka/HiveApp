@@ -1,31 +1,52 @@
 package com.example.hiveapp.ui.theme.screens.createEditHive
 
+import Screen
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hiveapp.R
+import com.example.hiveapp.data.model.Hive
+import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TopBar
+import com.example.hiveapp.ui.theme.Typography
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: Int) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val createEditHiveViewModel: CreateEditHiveViewModel = getViewModel()
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
 
@@ -47,10 +68,202 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
             )
         },
     ) { innerPadding ->
+        val currentTimestamp = System.currentTimeMillis()
+        var hiveData: Hive by remember { mutableStateOf(Hive(0, 0, "", 0, 0, 0, "", 0, 0, "", currentTimestamp, currentTimestamp))}
+
+        var familyType by remember { mutableIntStateOf(hiveData.familyType) }
+        var type by remember { mutableIntStateOf(hiveData.type) }
+        var breed by remember { mutableIntStateOf(hiveData.breed) }
+        var year by remember { mutableIntStateOf(hiveData.year) }
+        var state by remember { mutableIntStateOf(hiveData.state) }
+
+        var familyTypeExpanded by remember { mutableStateOf(false) }
+        var typeExpanded by remember { mutableStateOf(false) }
+        var breedExpanded by remember { mutableStateOf(false) }
+        var yearExpanded by remember { mutableStateOf(false) }
+        var stateExpanded by remember { mutableStateOf(false) }
+
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxWidth()
         ) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+
+            ) {
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.create_hive_form_hive_title),
+                    style = Typography.titleMedium,
+                )
+
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = hiveData.name,
+                    onValueChange = { newValue ->
+                        hiveData = hiveData.copy(name = newValue)
+                    },
+                    label = {
+                        Text(stringResource(R.string.create_hive_form_name))
+                    },
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {}
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                ExposedDropdown(
+                    expanded = familyTypeExpanded,
+                    setExpanded = { familyTypeExpanded = it},
+                    options = DataConstants.familyType,
+                    setSelected = { familyType = it },
+                    selected = hiveData.familyType,
+                    label = stringResource(R.string.create_hive_form_family_type)
+                )
+
+                ExposedDropdown(
+                    expanded = typeExpanded,
+                    setExpanded = { typeExpanded = it},
+                    options = DataConstants.hiveType,
+                    selected = type,
+                    setSelected = { type = it },
+                    label = stringResource(R.string.create_hive_form_type)
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.create_hive_form_queen_title),
+                    style = Typography.titleMedium,
+                )
+
+                ExposedDropdown(
+                    expanded = breedExpanded,
+                    setExpanded = { breedExpanded = it},
+                    options = DataConstants.queenBreed,
+                    selected = breed,
+                    setSelected = { breed = it },
+                    label = "Rasa"
+                )
+
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = hiveData.line,
+                    onValueChange = { newValue ->
+                        hiveData = hiveData.copy(line = newValue)
+                    },
+                    label = { Text("Linia") },
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(
+                        onDone = {}
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                ExposedDropdown(
+                    expanded = yearExpanded,
+                    setExpanded = { yearExpanded = it},
+                    options = DataConstants.queenYear,
+                    selected = year,
+                    setSelected = { year = it },
+                    label = "Oznaczenie matki"
+                )
+
+                ExposedDropdown(
+                    expanded = stateExpanded,
+                    setExpanded = { stateExpanded = it},
+                    options = DataConstants.queenState,
+                    selected = state,
+                    setSelected = { state = it },
+                    label = "Stan"
+                )
+
+                TextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = hiveData.note,
+                    onValueChange = { newValue ->
+                        hiveData = hiveData.copy(note = newValue)
+                    },
+                    label = { Text("Notatka") },
+                    minLines = 5,
+                    keyboardActions = KeyboardActions(
+                        onDone = {}
+                    ),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {
+                        createEditHiveViewModel.insertHive(Hive(
+                            hiveData.id,
+                            hiveData.uId,
+                            hiveData.name,
+                            type,
+                            hiveData.familyType,
+                            breed,
+                            hiveData.line,
+                            year,
+                            state,
+                            hiveData.note,
+                            hiveData.created,
+                            hiveData.edited
+                        ))
+
+                        navController.navigate(moveRoute)
+                    }
+                ) {
+                    Text(stringResource(R.string.create_hive_form_button))
+                }
+            }
         }
     }
 }
 
+object DataConstants {
+    val queenState = listOf(
+        "Unasienniona",
+        "Nieunasienniona"
+    )
+
+    val queenBreed = listOf(
+        "Krainka",
+        "Buckfast",
+        "Włoszka"
+    )
+
+    val queenYear = listOf(
+        "Biały",
+        "Żółty",
+        "Czerwony",
+        "Zielony",
+        "Niebieski"
+    )
+
+    val familyType = listOf(
+        "Produkcyjna",
+        "Odkład",
+        "Wychowująca"
+    )
+
+    val hiveType = listOf(
+        "Wielkopolski",
+        "Dadant",
+        "Warszawski"
+    )
+}

@@ -11,7 +11,7 @@ import com.example.hiveapp.ui.theme.screens.home.HomeScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = Screen.CreateEditHive.route ) {
+    NavHost(navController, startDestination = Screen.Home.route ) {
         composable(Screen.Home.route) {
             HomeScreen(navController)
         }

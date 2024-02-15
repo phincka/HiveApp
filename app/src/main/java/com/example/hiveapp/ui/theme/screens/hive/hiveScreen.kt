@@ -1,11 +1,19 @@
 package com.example.hiveapp.ui.theme.screens.hive
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material3.Divider
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -26,6 +34,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hiveapp.R
+import com.example.hiveapp.data.model.Hive
+import com.example.hiveapp.ui.components.Dropdown
+import com.example.hiveapp.ui.components.Modal
 import com.example.hiveapp.ui.components.TopBar
 import org.koin.androidx.compose.getViewModel
 
@@ -35,9 +46,13 @@ fun HiveScreen(navController: NavController, id: Int) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val hiveViewModel: HiveViewModel = getViewModel()
 
-    val hives by hiveViewModel.getHive(0).collectAsState(initial = null)
+    val hiveList by hiveViewModel.getHive(id).collectAsState(initial = emptyList())
+    val hive = hiveList.firstOrNull()
+
+    println(hive)
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
+    var isModalActive by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -49,7 +64,7 @@ fun HiveScreen(navController: NavController, id: Int) {
                 content = {
                     IconButton(onClick = { isDropdownMenuVisible = true }) {
                         Icon(
-                            imageVector = Icons.Filled.Search,
+                            imageVector = Icons.Filled.MoreVert,
                             contentDescription = null
                         )
                     }
@@ -74,13 +89,66 @@ fun HiveScreen(navController: NavController, id: Int) {
             .padding(innerPadding)
             .padding(top = 10.dp)
         ) {
-            hives?.let { hive ->
-                if (hive.isNotEmpty()) {
-                    Text(hive[0].name)
-                } else {
-                    Text(stringResource(R.string.home_no_hive))
-                }
+            if (hive !== null) {
+                Text(hive.name)
+            } else {
+                Text(stringResource(R.string.home_no_hive))
             }
         }
+
+        Dropdown(
+            isDropdownMenuVisible = isDropdownMenuVisible,
+            setDropdownMenuVisible = {isDropdownMenuVisible = it},
+        )
+        {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.hive_nav_add_geo)) },
+                onClick = { },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Edit,
+                        contentDescription = null
+                    )
+                }
+            )
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.hive_nav_edit_hive)) },
+                onClick = { navController.navigate("${Screen.CreateEditHive.route}/${id}") },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Edit,
+                        contentDescription = null
+                    )
+                }
+            )
+
+            Divider()
+            Spacer(modifier = Modifier.height(16.dp))
+
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.hive_nav_remove_hive)) },
+                onClick = { isModalActive = true },
+                leadingIcon = {
+                    Icon(
+                        Icons.Outlined.Clear,
+                        contentDescription = null
+                    )
+                }
+            )
+        }
+
+        Modal(
+            dialogTitle = stringResource(R.string.hive_remove_modal_title),
+            dialogText = stringResource(R.string.hive_remove_modal_text),
+            icon = Icons.Filled.Warning,
+            isModalActive = isModalActive,
+            onDismissRequest = {isModalActive = false},
+            onConfirmation = {
+                if (hive != null) {
+                    hiveViewModel.removeHive(hive)
+                    navController.navigate(Screen.Home.route)
+                }
+            },
+        )
     }
 }

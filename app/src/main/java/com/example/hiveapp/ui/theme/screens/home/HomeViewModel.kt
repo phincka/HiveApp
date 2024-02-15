@@ -10,10 +10,4 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
     val getAll: Flow<List<Hive>> = hiveRepository.getAll()
-
-    fun insertHive(hive: Hive) {
-        CoroutineScope(viewModelScope.coroutineContext).launch {
-            hiveRepository.insert(hive)
-        }
-    }
 }
