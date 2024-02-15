@@ -31,6 +31,7 @@ import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.TopBar
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,8 +43,7 @@ fun HomeScreen(navController: NavController) {
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
 
-    val applicationContext = LocalContext.current
-    val service = NotificationService(applicationContext)
+    val notificationService = get<NotificationService>()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -74,11 +74,11 @@ fun HomeScreen(navController: NavController) {
             .padding(top = 10.dp)
         ) {
             Column {
-                Button(onClick = { service.showGeoNotification() }) {
+                Button(onClick = { notificationService.showGeoNotification() }) {
                     Text(text = "Kliknij mnie!")
                 }
 
-                Button(onClick = { service.showCreateNotification() }) {
+                Button(onClick = { notificationService.showCreateNotification() }) {
                     Text(text = "Kliknij mnie!2")
                 }
                 if (hives.isNotEmpty()) {
