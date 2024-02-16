@@ -8,6 +8,7 @@ import com.example.hiveapp.ui.theme.screens.addHiveLocation.AddHiveLocation
 import com.example.hiveapp.ui.theme.screens.createEditHive.CreateEditHiveScreen
 import com.example.hiveapp.ui.theme.screens.hive.HiveScreen
 import com.example.hiveapp.ui.theme.screens.home.HomeScreen
+import com.example.hiveapp.ui.theme.screens.weatherScreen.WeatherScreen
 
 
 @Composable
@@ -56,6 +57,17 @@ fun NavigationGraph(navController: NavHostController) {
                 AddHiveLocation(navController, id)
             }
         }
+
+        composable(
+            route = "${Screen.Weather.route}/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("id")
+
+            if (id != null) {
+                WeatherScreen(navController, id)
+            }
+        }
     }
 }
 
@@ -64,4 +76,5 @@ sealed class Screen(val route: String) {
     object Hive : Screen("hive")
     object CreateEditHive : Screen("create_edit_hive")
     object AddHiveLocation : Screen("add_hive_location")
+    object Weather : Screen("weather")
 }

@@ -26,6 +26,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,10 +58,15 @@ fun HiveScreen(navController: NavController, id: Int) {
     val hive = hiveList.firstOrNull()
 
     val notificationService = get<NotificationService>()
-    notificationService.showCreateNotification()
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
     var isModalActive by remember { mutableStateOf(false) }
+
+    if (hive !== null && hive.lat == 0.0) {
+        LaunchedEffect(Unit) {
+            notificationService.showGeoNotification()
+        }
+    }
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -102,6 +109,13 @@ fun HiveScreen(navController: NavController, id: Int) {
                     } else {
                         Text(stringResource(R.string.hive_nav_add_geo))
                     }
+                }
+
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = {navController.navigate("${Screen.Weather.route}/${id}")}
+                ) {
+                    Text(stringResource(R.string.hive_nav_show_weather))
                 }
             } else {
                 Text(stringResource(R.string.home_no_hive))

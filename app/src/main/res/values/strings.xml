@@ -15,6 +15,7 @@
     <string name="hive_tab_name_queen">O matce</string>
     <string name="hive_nav_add_geo">Dodaj lokalizacje</string>
     <string name="hive_nav_update_geo">Zmień lokalizacje</string>
+    <string name="hive_nav_show_weather">Sprawdź pogodę</string>
     <string name="hive_nav_edit_hive">Edytuj ul</string>
     <string name="hive_nav_remove_hive">Usuń!</string>
     <string name="hive_remove_modal_title">Usuń ul</string>
@@ -43,6 +44,10 @@
     <string name="add_hive_location_snackbar_close">Zamknij</string>
     <string name="add_hive_location_marker_title">Ul: </string>
     <string name="add_hive_location_marker_snippet">Najlepszy zasięg lotu pszczoły: 1,5km.</string>
+    <!-- Create hive screen end -->
+
+    <!-- Weather screen start -->
+    <string name="weather_top_title">Sprawdź pogodę</string>
     <!-- Create hive screen end -->
 
     <!-- Notifications channels start -->

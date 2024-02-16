@@ -9,6 +9,7 @@ import com.example.hiveapp.ui.theme.screens.addHiveLocation.AddHiveLocationViewM
 import com.example.hiveapp.ui.theme.screens.createEditHive.CreateEditHiveViewModel
 import com.example.hiveapp.ui.theme.screens.hive.HiveViewModel
 import com.example.hiveapp.ui.theme.screens.home.HomeViewModel
+import com.example.hiveapp.ui.theme.screens.weatherScreen.WeatherViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -25,4 +26,5 @@ val appModule = module {
     viewModel { HiveViewModel(get()) }
     viewModel { CreateEditHiveViewModel(get()) }
     viewModel { AddHiveLocationViewModel(get()) }
+    viewModel { WeatherViewModel(get()) }
 }
