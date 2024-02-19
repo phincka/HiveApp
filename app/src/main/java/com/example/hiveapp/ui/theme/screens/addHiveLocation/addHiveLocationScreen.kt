@@ -47,6 +47,7 @@ fun AddHiveLocation(navController: NavController, id: Int) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(54.749054, 18.3732243), 13f)
     }
+
     val uiSettings = remember { MapUiSettings(zoomControlsEnabled = false) }
 
     val scope = rememberCoroutineScope()

@@ -1,6 +1,8 @@
 package com.example.hiveapp.ui.theme.screens.home
 
 import Screen
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,6 +29,7 @@ import com.example.hiveapp.ui.components.TopBar
 import org.koin.androidx.compose.getViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController) {
@@ -34,6 +37,10 @@ fun HomeScreen(navController: NavController) {
     val homeViewModel: HomeViewModel = getViewModel()
 
     val hives by homeViewModel.getAll.collectAsState(emptyList())
+
+//    homeViewModel.getWeather(54.749054, 18.3732243)
+
+
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),

@@ -13,10 +13,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.hiveapp.data.model.Hive
+import com.example.hiveapp.data.model.HiveModel
 
 @Composable
-fun HiveRow(hive: Hive, navController : NavController) {
+fun HiveRow(hive: HiveModel, navController : NavController) {
     Surface(
         modifier = Modifier
             .fillMaxSize()

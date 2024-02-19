@@ -1,6 +1,5 @@
 package com.example.hiveapp.ui.theme.screens.createEditHive
 
-import Screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,7 +22,6 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +34,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hiveapp.R
-import com.example.hiveapp.data.model.Hive
+import com.example.hiveapp.data.model.HiveModel
 import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TopBar
@@ -72,7 +70,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
         },
     ) { innerPadding ->
         val currentTimestamp = System.currentTimeMillis()
-        var hiveData: Hive by remember { mutableStateOf(Hive(0, 0, "", 0, 0, 0, "", 0, 0, "", 0.0, 0.0, currentTimestamp, currentTimestamp))}
+        var hiveData: HiveModel by remember { mutableStateOf(HiveModel(0, 0, "", 0, 0, 0, "", 0, 0, "", 0.0, 0.0, currentTimestamp, currentTimestamp))}
 
         var familyType by remember { mutableIntStateOf(hiveData.familyType) }
         var type by remember { mutableIntStateOf(hiveData.type) }
@@ -212,7 +210,7 @@ fun CreateEditHiveScreen(navController: NavController, moveRoute: String, id: In
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
-                        createEditHiveViewModel.insertHive(Hive(
+                        createEditHiveViewModel.insertHive(HiveModel(
                             hiveData.id,
                             hiveData.uId,
                             hiveData.name,
