@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Clear
@@ -18,7 +17,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -26,14 +24,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -61,6 +58,14 @@ fun HiveScreen(navController: NavController, id: Int) {
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
     var isModalActive by remember { mutableStateOf(false) }
+
+    var lat by remember { mutableDoubleStateOf(54.749054) }
+    var lng by remember { mutableDoubleStateOf(18.3732243) }
+
+    if (hive !== null && hive.lat > 0 && hive.lng > 0) {
+        lat = hive.lat
+        lng = hive.lng
+    }
 
     if (hive !== null && hive.lat == 0.0) {
         LaunchedEffect(Unit) {
@@ -99,17 +104,16 @@ fun HiveScreen(navController: NavController, id: Int) {
                     text = hive.name,
                     style = Typography.titleLarge,
                 )
-
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}")}
-                ) {
-                    if (hive.lat > 0 && hive.lng > 0) {
-                        Text(stringResource(R.string.hive_nav_update_geo))
-                    } else {
-                        Text(stringResource(R.string.hive_nav_add_geo))
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}")}
+                    ) {
+                        if (hive.lat > 0 && hive.lng > 0) {
+                            Text(stringResource(R.string.hive_nav_update_geo))
+                        } else {
+                            Text(stringResource(R.string.hive_nav_add_geo))
+                        }
                     }
-                }
 
                 Button(
                     modifier = Modifier.fillMaxWidth(),
@@ -129,7 +133,7 @@ fun HiveScreen(navController: NavController, id: Int) {
         {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.hive_nav_add_geo)) },
-                onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}") },
+                onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}")},
                 leadingIcon = {
                     Icon(
                         Icons.Outlined.Edit,

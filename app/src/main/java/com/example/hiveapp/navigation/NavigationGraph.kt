@@ -1,3 +1,5 @@
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,6 +13,7 @@ import com.example.hiveapp.ui.theme.screens.home.HomeScreen
 import com.example.hiveapp.ui.theme.screens.weatherScreen.WeatherScreen
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavigationGraph(navController: NavHostController) {
     NavHost(navController, startDestination = Screen.Home.route ) {
@@ -48,19 +51,28 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable(
-            route = "${Screen.AddHiveLocation.route}/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            route = "${Screen.AddHiveLocation.route}/{id}?lat={lat}&lng={lng}",
+            arguments = listOf(
+                navArgument("id") { type = NavType.IntType} ,
+                navArgument("lat") { type = NavType.StringType },
+                navArgument("lng") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id")
+            var lat = backStackEntry.arguments?.getString("lat")?.toDouble()
+            var lng = backStackEntry.arguments?.getString("lng")?.toDouble()
+
+            lat = lat?: 0.0
+            lng = lng?: 0.0
 
             if (id != null) {
-                AddHiveLocation(navController, id)
+                AddHiveLocation(navController, id, lat, lng)
             }
         }
 
         composable(
             route = "${Screen.Weather.route}/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            arguments = listOf(navArgument("id") { type = NavType.IntType})
         ) { backStackEntry ->
             val id = backStackEntry.arguments?.getInt("id")
 

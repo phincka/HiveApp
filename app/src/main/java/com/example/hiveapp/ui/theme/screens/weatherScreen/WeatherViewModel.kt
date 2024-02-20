@@ -29,8 +29,8 @@ class WeatherViewModel(
 
             if (!remote.data.isNullOrEmpty()) {
                 val today = remote.data[0]?.get(0)
-                val hourly = remote.data[0]?.take(8)
-                val daily = remote.data[0]?.take(4)
+                val hourly = remote.data[0]
+                val daily = remote.data.entries.take(12)
 
                 state = state.copy(
                     today = today,

@@ -37,15 +37,19 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddHiveLocation(navController: NavController, id: Int) {
+fun AddHiveLocation(
+    navController: NavController,
+    id: Int,
+    lat: Double,
+    lng: Double
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val addHiveLocationViewModel: AddHiveLocationViewModel = getViewModel()
 
     val hivesLocations by addHiveLocationViewModel.getHivesLocations.collectAsState(emptyList())
 
-
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(54.749054, 18.3732243), 13f)
+        position = CameraPosition.fromLatLngZoom(LatLng(lat, lng), 13f)
     }
 
     val uiSettings = remember { MapUiSettings(zoomControlsEnabled = false) }

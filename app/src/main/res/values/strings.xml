@@ -34,17 +34,25 @@
     <string name="create_hive_form_queen_state">Stan</string>
     <string name="create_hive_form_queen_note">Notatka</string>
     <string name="create_hive_form_button">Utwórz ul</string>
-
     <!-- Create hive screen end -->
 
-    <!-- Create hive screen start -->
+    <!-- Add hive location screen start -->
     <string name="add_hive_location_title">Dodaj lokalizacje</string>
     <string name="add_hive_location_snackbar_update">Zmieniono położenie ula</string>
     <string name="add_hive_location_snackbar_create">Dodano nową lokalizację ula</string>
     <string name="add_hive_location_snackbar_close">Zamknij</string>
     <string name="add_hive_location_marker_title">Ul: </string>
     <string name="add_hive_location_marker_snippet">Najlepszy zasięg lotu pszczoły: 1,5km.</string>
-    <!-- Create hive screen end -->
+    <!-- Add hive location screen end -->
+
+    <!-- Weather screen start -->
+    <string name="weather_screen_no_location">Ul nie posiada lokalizacji</string>
+    <string name="weather_screen_loading">Ładowanie…</string>
+    <string name="weather_screen_today">Dziś</string>
+    <string name="weather_screen_today_prev">Cofnij</string>
+    <string name="weather_screen_today_next">Pokaż następne</string>
+    <string name="weather_screen_daily">Najbliższe dni</string>
+    <!-- Weather screen end -->
 
     <!-- Weather screen start -->
     <string name="weather_top_title">Sprawdź pogodę</string>
@@ -64,6 +72,4 @@
 
     <string name="notification_no_permission">Brak uprawnień do wyświetalnia powiadomień</string>
     <!-- Notifications start-->
-
-
 </resources>

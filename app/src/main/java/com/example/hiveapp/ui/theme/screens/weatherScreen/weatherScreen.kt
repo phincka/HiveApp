@@ -1,8 +1,8 @@
 package com.example.hiveapp.ui.theme.screens.weatherScreen
 
+import Screen
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -21,18 +21,17 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.hiveapp.R
+import com.example.hiveapp.ui.components.DailyWeather
+import com.example.hiveapp.ui.components.HourlyWeatherSlider
+import com.example.hiveapp.ui.components.TodayWeather
 import com.example.hiveapp.ui.components.TopBar
-import com.example.hiveapp.ui.components.WeatherSlider
 import com.example.hiveapp.ui.theme.Typography
 import org.koin.androidx.compose.getViewModel
 
@@ -46,8 +45,7 @@ fun WeatherScreen(navController: NavController, id: Int) {
     val hiveList by weatherViewModel.getLocationByHiveId(id).collectAsState(initial = emptyList())
     val hive = hiveList.firstOrNull()
 
-
-    if (hive != null) {
+    if (hive != null && hive.lat > 0.0 && hive.lng > 0.0) {
         weatherViewModel.getWeather(hive.lat, hive.lng)
     }
 
@@ -70,103 +68,49 @@ fun WeatherScreen(navController: NavController, id: Int) {
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (weatherViewModel.state.loading == false) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Column(
+                modifier = Modifier.fillMaxSize()
+            ) {
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Spacer(modifier = Modifier.height(16.dp))
-
+                if (weatherViewModel.state.loading == false) {
                     if (weatherViewModel.state.today !== null) {
-                        val today = weatherViewModel.state.today!!
-
-                        Text(
-                            text = "Puck",
-                            style = Typography.headlineMedium,
-                            fontWeight = FontWeight(600),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
-
-                        Text(
-                            text = today.time.toString(),
-                            style = Typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
-
-                        Text(
-                            text = today.weatherType.weatherDesc,
-                            style = Typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
-
-                        Image(
-                            painter = painterResource(today.weatherType.iconRes),
-                            contentDescription = "weather icon",
-                            modifier = Modifier
-                                .align(Alignment.CenterHorizontally)
-                                .size(100.dp)
-                        )
-
-                        Text(
-                            text = today.temperatureCelsius.toString(),
-                            style = Typography.headlineMedium,
-                            fontWeight = FontWeight(700),
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
-
-                        Text(
-                            text = "5:50 -> 17:32",
-                            style = Typography.titleSmall,
-                            textAlign = TextAlign.Center,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        )
+                        TodayWeather(weatherViewModel.state.today!!)
                     }
-
                     if (weatherViewModel.state.hourly !== null) {
                         val hourly = weatherViewModel.state.hourly!!
-                        Text(
-                            text = "Dziś",
-                            style = Typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 24.dp)
-                        )
-
-                        WeatherSlider(hourly)
+                        HourlyWeatherSlider(hourly)
                     }
-
                     if (weatherViewModel.state.daily !== null) {
                         val daily = weatherViewModel.state.daily!!
-                        Text(
-                            text = "Najbliższe dni",
-                            style = Typography.titleMedium,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 24.dp)
-                        )
-
-                        WeatherSlider(daily)
+                        DailyWeather(daily)
                     }
+                } else if (hive != null && hive.lat == 0.0 && hive.lng == 0.0)  {
+                    Text(
+                        text = stringResource(R.string.weather_screen_no_location),
+                        style = Typography.titleMedium,
+                        fontWeight = FontWeight(700)
+                    )
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 10.dp),
+                        onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${54.749054}&lng=${18.3732243}")}
+                    ) {
+                        Text(stringResource(R.string.hive_nav_add_geo))
+                    }
+                } else {
+                    Text(
+                        text = stringResource(R.string.weather_screen_loading),
+                        style = Typography.titleLarge,
+                        fontWeight = FontWeight(700)
+                    )
                 }
-            } else {
-                Text(
-                    text = "Ładowanie....",
-                    style = Typography.titleLarge,
-                    fontWeight = FontWeight(700)
-                )
             }
+            Spacer(modifier = Modifier.height(32.dp))
         }
     }
 }

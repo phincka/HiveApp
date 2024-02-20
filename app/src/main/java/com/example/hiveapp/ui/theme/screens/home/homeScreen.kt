@@ -38,10 +38,6 @@ fun HomeScreen(navController: NavController) {
 
     val hives by homeViewModel.getAll.collectAsState(emptyList())
 
-//    homeViewModel.getWeather(54.749054, 18.3732243)
-
-
-
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
