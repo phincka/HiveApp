@@ -26,7 +26,7 @@ fun DailyWeather(dailyData: List<Map.Entry<Int, List<WeatherModel>>>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp),
+            .padding(top = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         for (data in dailyData.take(4)) {

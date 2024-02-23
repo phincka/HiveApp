@@ -1,8 +1,6 @@
 package com.example.hiveapp.ui.theme.screens.home
 
 import Screen
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -26,17 +24,18 @@ import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.TopBar
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(
+    navController: NavController,
+    homeViewModel: HomeViewModel = koinViewModel()
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val homeViewModel: HomeViewModel = getViewModel()
 
-    val hives by homeViewModel.getAll.collectAsState(emptyList())
+    val hives by homeViewModel.getAllHives.collectAsState(emptyList())
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -64,17 +63,14 @@ fun HomeScreen(navController: NavController) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
-            .padding(top = 10.dp)
         ) {
-            Column {
-                if (hives.isNotEmpty()) {
-                    HivesLazyColumn(hives, navController)
-                } else {
-                    Text(
-                        text = stringResource(R.string.home_no_hives),
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    )
-                }
+            if (hives.isNotEmpty()) {
+                HivesLazyColumn(hives, navController)
+            } else {
+                Text(
+                    text = stringResource(R.string.home_no_hives),
+                    modifier = Modifier.padding(horizontal = 24.dp)
+                )
             }
         }
     }

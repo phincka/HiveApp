@@ -40,18 +40,22 @@ import com.example.hiveapp.R
 import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.Dropdown
 import com.example.hiveapp.ui.components.Modal
+import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
 import org.koin.androidx.compose.get
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HiveScreen(navController: NavController, id: Int) {
+fun HiveScreen(
+    navController: NavController,
+    id: Int
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val hiveViewModel: HiveViewModel = getViewModel()
+    val hiveViewModel: HiveViewModel = koinViewModel()
 
-    val hiveList by hiveViewModel.getHive(id).collectAsState(initial = emptyList())
+    val hiveList by hiveViewModel.getHiveById(id).collectAsState(initial = emptyList())
     val hive = hiveList.firstOrNull()
 
     val notificationService = get<NotificationService>()
@@ -62,12 +66,12 @@ fun HiveScreen(navController: NavController, id: Int) {
     var lat by remember { mutableDoubleStateOf(54.749054) }
     var lng by remember { mutableDoubleStateOf(18.3732243) }
 
-    if (hive !== null && hive.lat > 0 && hive.lng > 0) {
+    if (hive != null && hive.lat > 0 && hive.lng > 0) {
         lat = hive.lat
         lng = hive.lng
     }
 
-    if (hive !== null && hive.lat == 0.0) {
+    if (hive?.lat == 0.0) {
         LaunchedEffect(Unit) {
             notificationService.showGeoNotification()
         }
@@ -79,7 +83,7 @@ fun HiveScreen(navController: NavController, id: Int) {
             TopBar(
                 navController,
                 scrollBehavior,
-                title = "${stringResource(R.string.hive_top_bar_title)} ${hive?.name}",
+                title = "${stringResource(R.string.hive_top_bar_title)} ${hive?.name.orEmpty()}",
                 content = {
                     IconButton(onClick = { isDropdownMenuVisible = true }) {
                         Icon(
@@ -91,36 +95,39 @@ fun HiveScreen(navController: NavController, id: Int) {
             )
         }
     ) { innerPadding ->
+        val topPadding = innerPadding.calculateTopPadding() + 12.dp
+        val horizontalPadding = 24.dp
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(
+                    start = horizontalPadding,
+                    end = horizontalPadding,
+                    top = topPadding
+                ),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             if (hive !== null) {
-                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = hive.name,
                     style = Typography.titleLarge,
                 )
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}")}
-                    ) {
-                        if (hive.lat > 0 && hive.lng > 0) {
-                            Text(stringResource(R.string.hive_nav_update_geo))
-                        } else {
-                            Text(stringResource(R.string.hive_nav_add_geo))
-                        }
-                    }
-
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = {navController.navigate("${Screen.Weather.route}/${id}")}
+                    onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}") }
                 ) {
-                    Text(stringResource(R.string.hive_nav_show_weather))
+                    if (hive.lat > 0 && hive.lng > 0) {
+                        Text(stringResource(R.string.hive_nav_update_geo))
+                    } else {
+                        Text(stringResource(R.string.hive_nav_add_geo))
+                    }
                 }
+                TextButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(R.string.hive_nav_show_weather),
+                    onClick = { navController.navigate("${Screen.Weather.route}/${id}") }
+                )
             } else {
                 Text(stringResource(R.string.home_no_hive))
             }
@@ -128,12 +135,12 @@ fun HiveScreen(navController: NavController, id: Int) {
 
         Dropdown(
             isDropdownMenuVisible = isDropdownMenuVisible,
-            setDropdownMenuVisible = {isDropdownMenuVisible = it},
+            setDropdownMenuVisible = { isDropdownMenuVisible = it },
         )
         {
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.hive_nav_add_geo)) },
-                onClick = {navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}")},
+                onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}") },
                 leadingIcon = {
                     Icon(
                         Icons.Outlined.Edit,
@@ -153,7 +160,7 @@ fun HiveScreen(navController: NavController, id: Int) {
             )
 
             Divider()
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             DropdownMenuItem(
                 text = { Text(stringResource(R.string.hive_nav_remove_hive)) },
@@ -172,7 +179,7 @@ fun HiveScreen(navController: NavController, id: Int) {
             dialogText = stringResource(R.string.hive_remove_modal_text),
             icon = Icons.Filled.Warning,
             isModalActive = isModalActive,
-            onDismissRequest = {isModalActive = false},
+            onDismissRequest = { isModalActive = false },
             onConfirmation = {
                 if (hive != null) {
                     hiveViewModel.removeHive(hive)

@@ -16,20 +16,18 @@ fun Dropdown(
     setDropdownMenuVisible: (Boolean) -> Unit,
     content: @Composable () -> Unit
 ) {
-    if (isDropdownMenuVisible) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .wrapContentSize(Alignment.TopEnd)
+    if (!isDropdownMenuVisible) return
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.TopEnd)
+    ) {
+        DropdownMenu(
+            expanded = true,
+            onDismissRequest = { setDropdownMenuVisible(false) },
+            modifier = Modifier.width(200.dp)
         ) {
-            DropdownMenu(
-                expanded = true,
-                onDismissRequest = { setDropdownMenuVisible(false) },
-                modifier = Modifier.width(200.dp)
-            ) {
-                content()
-            }
+            content()
         }
     }
-
 }

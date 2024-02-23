@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 class CreateEditHiveViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
     fun insertHive(hive: HiveModel) {
         CoroutineScope(viewModelScope.coroutineContext).launch {
-            hiveRepository.insert(hive)
+            hiveRepository.insertHive(hive)
         }
     }
 }

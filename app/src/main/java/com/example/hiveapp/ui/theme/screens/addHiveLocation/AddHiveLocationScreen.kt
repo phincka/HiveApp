@@ -32,7 +32,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +44,7 @@ fun AddHiveLocation(
     lng: Double
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val addHiveLocationViewModel: AddHiveLocationViewModel = getViewModel()
+    val addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
 
     val hivesLocations by addHiveLocationViewModel.getHivesLocations.collectAsState(emptyList())
 
@@ -64,20 +64,21 @@ fun AddHiveLocation(
                 navController,
                 scrollBehavior,
                 title = stringResource(R.string.add_hive_location_title),
-                content = {  }
+                content = { }
             )
         },
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
     ) { innerPadding ->
-        Column(modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
         ) {
             GoogleMap(
                 modifier = Modifier.fillMaxSize(),
-                properties = addHiveLocationViewModel.state.properties,
+                properties = addHiveLocationViewModel.mapState.properties,
                 cameraPositionState = cameraPositionState,
                 uiSettings = uiSettings,
                 onMapLongClick = { it ->
@@ -103,10 +104,8 @@ fun AddHiveLocation(
                         }
                     }
                 }
-            ){
-                hivesLocations.forEach {
-                    spot ->
-
+            ) {
+                hivesLocations.forEach { spot ->
                     Marker(
                         state = MarkerState(LatLng(spot.lat, spot.lng)),
                         title = "${stringResource(R.string.add_hive_location_marker_title)} ${spot.name}",
@@ -126,8 +125,6 @@ fun AddHiveLocation(
                     )
                 }
             }
-
-
         }
     }
 }

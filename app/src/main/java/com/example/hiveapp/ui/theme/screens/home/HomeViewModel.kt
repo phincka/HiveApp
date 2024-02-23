@@ -3,14 +3,12 @@ package com.example.hiveapp.ui.theme.screens.home
 import androidx.lifecycle.ViewModel
 import com.example.hiveapp.data.model.HiveModel
 import com.example.hiveapp.data.repository.HiveRepository
-import com.example.hiveapp.data.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 
 class HomeViewModel(
-    private val hiveRepository: HiveRepository,
-    private val weatherRepository: WeatherRepository
+    hiveRepository: HiveRepository
 ) : ViewModel() {
-    val getAll: Flow<List<HiveModel>> = hiveRepository.getAll()
+    val getAllHives: Flow<List<HiveModel>> = hiveRepository.getAllHives()
 
 //    @RequiresApi(Build.VERSION_CODES.O)
 //    fun getWeather(lat: Double, lng: Double) = viewModelScope.launch {

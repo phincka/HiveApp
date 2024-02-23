@@ -29,6 +29,7 @@
     <string name="create_hive_form_name">Nazwa ula</string>
     <string name="create_hive_form_family_type">Typ rodziny</string>
     <string name="create_hive_form_type">Rodzaj ula</string>
+    <string name="create_hive_form_queen_breed">Rasa</string>
     <string name="create_hive_form_queen_line">Linia</string>
     <string name="create_hive_form_queen_year">Oznaczenie matki</string>
     <string name="create_hive_form_queen_state">Stan</string>
@@ -72,4 +73,9 @@
 
     <string name="notification_no_permission">Brak uprawnień do wyświetalnia powiadomień</string>
     <!-- Notifications start-->
+
+    <!-- Remove modal start -->
+    <string name="remove_modal_remove">Usuń</string>
+    <string name="remove_modal_cancel">Anuluj</string>
+    <!-- Remove modal end -->
 </resources>

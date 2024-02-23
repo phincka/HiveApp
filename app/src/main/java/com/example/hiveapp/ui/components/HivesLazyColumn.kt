@@ -8,7 +8,10 @@ import androidx.navigation.NavController
 import com.example.hiveapp.data.model.HiveModel
 
 @Composable
-fun HivesLazyColumn(hives: List<HiveModel>, navController : NavController) {
+fun HivesLazyColumn(
+    hives: List<HiveModel>,
+    navController : NavController
+) {
     Divider()
     LazyColumn() {
         items(items = hives, key = { it.id }) { hive ->

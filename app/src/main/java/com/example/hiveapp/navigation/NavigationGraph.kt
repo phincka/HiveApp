@@ -22,21 +22,7 @@ fun NavigationGraph(navController: NavHostController) {
         }
 
         composable(Screen.CreateEditHive.route) {
-            CreateEditHiveScreen(navController, Screen.Home.route, 0)
-        }
-
-        composable(
-            route = "${Screen.CreateEditHive.route}/{id}",
-            arguments = listOf(navArgument("id") {
-                defaultValue = 0
-                type = NavType.IntType
-            })
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("id")
-
-            if (id != null) {
-                CreateEditHiveScreen(navController, Screen.Home.route, id)
-            }
+            CreateEditHiveScreen(navController, Screen.Home.route)
         }
 
         composable(

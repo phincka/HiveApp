@@ -21,10 +21,10 @@ val appModule = module {
     single { HiveRepository(get()) }
     single { WeatherRepository() }
 
-    single { NotificationChannels(androidContext()) }
+    single { NotificationChannels(androidContext()).hiveChannel() }
     single { NotificationService(androidContext()) }
 
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get()) }
     viewModel { HiveViewModel(get()) }
     viewModel { CreateEditHiveViewModel(get()) }
     viewModel { AddHiveLocationViewModel(get()) }

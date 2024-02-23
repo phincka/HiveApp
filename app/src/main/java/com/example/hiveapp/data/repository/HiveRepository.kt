@@ -10,23 +10,23 @@ import kotlinx.coroutines.withContext
 class HiveRepository(
     private val hiveDao: HiveDao
 ) {
-    fun getAll(): Flow<List<HiveModel>> {
-        return hiveDao.getAll()
+    fun getAllHives(): Flow<List<HiveModel>> {
+        return hiveDao.getAllHives()
     }
 
-    fun getHive(id: Int): Flow<List<HiveModel>> {
-        return hiveDao.getHive(id)
+    fun getHiveById(id: Int): Flow<List<HiveModel>> {
+        return hiveDao.getHiveById(id)
     }
-    suspend fun insert(hive: HiveModel) = withContext(Dispatchers.IO) {
-        hiveDao.insert(hive)
-    }
-
-    suspend fun update(hive: HiveModel) = withContext(Dispatchers.IO ) {
-        hiveDao.update(hive)
+    suspend fun insertHive(hive: HiveModel) = withContext(Dispatchers.IO) {
+        hiveDao.insertHive(hive)
     }
 
-    suspend fun delete(hives: List<HiveModel>) = withContext(Dispatchers.IO) {
-        hiveDao.delete(hives)
+    suspend fun updateHive(hive: HiveModel) = withContext(Dispatchers.IO ) {
+        hiveDao.updateHive(hive)
+    }
+
+    suspend fun deleteHives(hives: List<HiveModel>) = withContext(Dispatchers.IO) {
+        hiveDao.deleteHives(hives)
     }
     fun getHivesLocations(): Flow<List<HiveLocationModel>> {
         return hiveDao.getHivesLocations()

@@ -17,11 +17,11 @@ class WeatherViewModel(
     private val hiveRepository: HiveRepository,
     private val weatherRepository: WeatherRepository
 ) : ViewModel() {
+    var weatherState by mutableStateOf(WeatherState())
+
     fun getLocationByHiveId(id: Int): Flow<List<HiveLocationModel>> {
         return hiveRepository.getLocationByHiveId(id)
     }
-
-    var state by mutableStateOf(WeatherState())
     @RequiresApi(Build.VERSION_CODES.O)
     fun getWeather(lat: Double, lng: Double) {
         viewModelScope.launch {
@@ -32,7 +32,7 @@ class WeatherViewModel(
                 val hourly = remote.data[0]
                 val daily = remote.data.entries.take(12)
 
-                state = state.copy(
+                weatherState = weatherState.copy(
                     today = today,
                     hourly = hourly,
                     daily = daily,

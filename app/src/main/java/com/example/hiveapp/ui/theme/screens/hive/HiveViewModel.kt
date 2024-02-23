@@ -8,12 +8,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class HiveViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
-    fun getHive(id: Int): Flow<List<HiveModel>> {
-        return hiveRepository.getHive(id)
+class HiveViewModel(
+    private val hiveRepository: HiveRepository
+) : ViewModel() {
+    fun getHiveById(id: Int): Flow<List<HiveModel>> {
+        return hiveRepository.getHiveById(id)
     }
 
     fun removeHive(hive: HiveModel) = CoroutineScope(viewModelScope.coroutineContext).launch {
-        hiveRepository.delete(listOf(hive))
+        hiveRepository.deleteHives(listOf(hive))
     }
 }

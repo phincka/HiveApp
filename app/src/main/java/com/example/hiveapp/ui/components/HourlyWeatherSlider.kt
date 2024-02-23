@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -14,12 +13,10 @@ import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.ui.theme.Typography
-import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HourlyWeatherSlider(hourlyData: List<WeatherModel>) {
     val pagerState = rememberPagerState(0)
@@ -61,7 +58,7 @@ fun HourlyWeatherSlider(hourlyData: List<WeatherModel>) {
     HorizontalPager(
         count = groupedTables.size,
         state = pagerState,
-        itemSpacing = 5.dp,
+        itemSpacing = 8.dp,
         modifier = Modifier
             .fillMaxWidth()
     ) {
@@ -70,8 +67,8 @@ fun HourlyWeatherSlider(hourlyData: List<WeatherModel>) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(5.dp)
+                .padding(top = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             for (index in groupedTables[data].indices) {
                 WeatherCard(groupedTables[data][index], Modifier.weight(1f))
@@ -82,30 +79,30 @@ fun HourlyWeatherSlider(hourlyData: List<WeatherModel>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 10.dp),
+            .padding(top = 12.dp),
         horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Button(
-            enabled = isPrevEnable,
+
+        TextButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(R.string.weather_screen_today_prev),
             onClick = {
                 animationScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage - 1)
                 }
             },
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(stringResource(R.string.weather_screen_today_prev))
-        }
+            enabled = isPrevEnable,
+        )
 
-        Button(
+
+        TextButton(
+            modifier = Modifier.weight(1f),
+            text = stringResource(R.string.weather_screen_today_next),
             onClick = {
                 animationScope.launch {
                     pagerState.animateScrollToPage(pagerState.currentPage + 1)
                 }
-            },
-            modifier = Modifier.weight(1f),
-        ) {
-            Text(stringResource(R.string.weather_screen_today_next))
-        }
+            }
+        )
     }
 }

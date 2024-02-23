@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.data.model.WeatherModel
@@ -22,9 +21,8 @@ fun TodayWeather(today: WeatherModel) {
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = "Puck",
+            text = "[NAZWA_MIASTA]",
             style = Typography.headlineMedium,
-            fontWeight = FontWeight(600),
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,7 +46,7 @@ fun TodayWeather(today: WeatherModel) {
 
         Image(
             painter = painterResource(today.weatherType.iconRes),
-            contentDescription = "weather icon",
+            contentDescription = null,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .size(100.dp)
@@ -57,15 +55,6 @@ fun TodayWeather(today: WeatherModel) {
         Text(
             text = today.temperatureCelsius.toString(),
             style = Typography.headlineMedium,
-            fontWeight = FontWeight(700),
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-
-        Text(
-            text = "5:50 -> 17:32",
-            style = Typography.titleSmall,
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()

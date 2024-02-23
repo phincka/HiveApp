@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 class AddHiveLocationViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
     val getHivesLocations: Flow<List<HiveLocationModel>> = hiveRepository.getHivesLocations()
+    var mapState by mutableStateOf(MapState())
 
     fun updateHiveLocation(id: Int, lat: Double, lng: Double) {
         CoroutineScope(viewModelScope.coroutineContext).launch {
@@ -20,5 +21,4 @@ class AddHiveLocationViewModel(private val hiveRepository: HiveRepository) : Vie
         }
     }
 
-    var state by mutableStateOf(MapState())
 }
