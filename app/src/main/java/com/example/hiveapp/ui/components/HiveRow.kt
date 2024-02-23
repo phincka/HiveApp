@@ -9,19 +9,22 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import com.example.hiveapp.data.model.HiveModel
+import com.example.hiveapp.ui.theme.screens.destinations.HiveScreenDestination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 
 @Composable
 fun HiveRow(
     hive: HiveModel,
-    navController : NavController
+    navigator : DestinationsNavigator
 ) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
         onClick = {
-            navController.navigate("hive/${hive.id}")
+            navigator.navigate(
+                HiveScreenDestination(id = hive.id)
+            )
         }
     ){
         ListItem(

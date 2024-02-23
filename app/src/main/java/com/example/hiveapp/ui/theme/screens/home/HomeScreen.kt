@@ -1,6 +1,5 @@
 package com.example.hiveapp.ui.theme.screens.home
 
-import Screen
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -20,17 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.TopBar
+import com.example.hiveapp.ui.theme.screens.destinations.CreateEditHiveScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+@RootNavGraph(start = true)
+@Destination()
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -41,15 +45,18 @@ fun HomeScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                navController,
-                scrollBehavior,
+                scrollBehavior = scrollBehavior,
                 title = stringResource(R.string.home_top_bar_title),
                 content = {  }
             )
         },
         floatingActionButton = {
             ExtendedFloatingActionButton(
-                onClick = {navController.navigate(Screen.CreateEditHive.route)},
+                onClick = {
+                    navigator.navigate(
+                        CreateEditHiveScreenDestination
+                    )
+                },
                 text = { Text(stringResource(R.string.home_floating_action_button)) },
                 icon = {
                     Icon(
@@ -65,7 +72,7 @@ fun HomeScreen(
             .padding(innerPadding)
         ) {
             if (hives.isNotEmpty()) {
-                HivesLazyColumn(hives, navController)
+                HivesLazyColumn(hives, navigator)
             } else {
                 Text(
                     text = stringResource(R.string.home_no_hives),

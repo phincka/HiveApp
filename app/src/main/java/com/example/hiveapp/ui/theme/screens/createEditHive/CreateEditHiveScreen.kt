@@ -39,14 +39,17 @@ import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
 fun CreateEditHiveScreen(
     navController: NavController,
-    moveRoute: String
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val createEditHiveViewModel: CreateEditHiveViewModel = koinViewModel()
@@ -58,7 +61,7 @@ fun CreateEditHiveScreen(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                navController,
+                backNavigation = { resultNavigator.navigateBack(result = true) },
                 scrollBehavior,
                 title = stringResource(R.string.create_hive_title),
                 content = {
@@ -246,7 +249,7 @@ fun CreateEditHiveScreen(
                         state,
                         notificationService,
                         navController,
-                        moveRoute
+//                        moveRoute
                     )
                 }
             )
@@ -263,7 +266,7 @@ fun handleCreateEditHive(
     state: Int,
     notificationService: NotificationService,
     navController: NavController,
-    moveRoute: String
+//    moveRoute: String
 ) {
     viewModel.insertHive(
         HiveModel(
@@ -285,7 +288,7 @@ fun handleCreateEditHive(
     )
 
     notificationService.showCreateNotification()
-    navController.navigate(moveRoute)
+//    navController.navigate(moveRoute)
 }
 
 object DataConstants {

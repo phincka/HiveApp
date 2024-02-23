@@ -12,12 +12,11 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBar(
-    navController: NavController,
+    backNavigation: (() -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior,
     title: String,
     content: @Composable () -> Unit
@@ -34,14 +33,20 @@ fun TopBar(
                 overflow = TextOverflow.Ellipsis
             )
         },
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack() }) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Localized description"
-                )
-            }
-        },
+            navigationIcon = {
+                if (backNavigation != null) {
+                    IconButton(
+                        onClick = {
+                            backNavigation()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Localized description"
+                        )
+                    }
+                }
+            },
         actions = {
             content()
         },

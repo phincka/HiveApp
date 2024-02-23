@@ -1,12 +1,9 @@
 package com.example.hiveapp.ui.theme.screens.hive
 
-import Screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -14,8 +11,6 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -35,22 +30,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.hiveapp.R
+import com.example.hiveapp.data.util.DropdownMenuItemData
 import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.Dropdown
 import com.example.hiveapp.ui.components.Modal
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import com.example.hiveapp.ui.theme.screens.destinations.AddHiveLocationDestination
+import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.WeatherScreenDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
 fun HiveScreen(
-    navController: NavController,
-    id: Int
+    id: Int,
+    navigator: DestinationsNavigator,
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val hiveViewModel: HiveViewModel = koinViewModel()
@@ -77,12 +80,36 @@ fun HiveScreen(
         }
     }
 
+    val menuItems = listOf(
+        DropdownMenuItemData(
+            icon = Icons.Outlined.Edit,
+            text = stringResource(R.string.hive_nav_add_geo),
+            onClick = {
+                navigator.navigate(
+                    AddHiveLocationDestination(id, lat, lng)
+                )
+            }
+        ),
+        DropdownMenuItemData(
+            icon = Icons.Outlined.Edit,
+            text = stringResource(R.string.hive_nav_edit_hive),
+            onClick = { }
+        ),
+        DropdownMenuItemData(
+            icon = Icons.Outlined.Clear,
+            text = stringResource(R.string.hive_nav_remove_hive),
+            onClick = {
+                isModalActive = true
+            }
+        ),
+    )
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                navController,
-                scrollBehavior,
+                backNavigation = { resultNavigator.navigateBack(result = true) },
+                scrollBehavior = scrollBehavior,
                 title = "${stringResource(R.string.hive_top_bar_title)} ${hive?.name.orEmpty()}",
                 content = {
                     IconButton(onClick = { isDropdownMenuVisible = true }) {
@@ -115,7 +142,11 @@ fun HiveScreen(
                 )
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}") }
+                    onClick = {
+                        navigator.navigate(
+                            AddHiveLocationDestination(id, lat, lng)
+                        )
+                    }
                 ) {
                     if (hive.lat > 0 && hive.lng > 0) {
                         Text(stringResource(R.string.hive_nav_update_geo))
@@ -126,7 +157,11 @@ fun HiveScreen(
                 TextButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.hive_nav_show_weather),
-                    onClick = { navController.navigate("${Screen.Weather.route}/${id}") }
+                    onClick = {
+                        navigator.navigate(
+                            WeatherScreenDestination(id)
+                        )
+                    }
                 )
             } else {
                 Text(stringResource(R.string.home_no_hive))
@@ -136,43 +171,8 @@ fun HiveScreen(
         Dropdown(
             isDropdownMenuVisible = isDropdownMenuVisible,
             setDropdownMenuVisible = { isDropdownMenuVisible = it },
+            menuItems = menuItems
         )
-        {
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.hive_nav_add_geo)) },
-                onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${lat}&lng=${lng}") },
-                leadingIcon = {
-                    Icon(
-                        Icons.Outlined.Edit,
-                        contentDescription = null
-                    )
-                }
-            )
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.hive_nav_edit_hive)) },
-                onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}") },
-                leadingIcon = {
-                    Icon(
-                        Icons.Outlined.Edit,
-                        contentDescription = null
-                    )
-                }
-            )
-
-            Divider()
-            Spacer(modifier = Modifier.height(12.dp))
-
-            DropdownMenuItem(
-                text = { Text(stringResource(R.string.hive_nav_remove_hive)) },
-                onClick = { isModalActive = true },
-                leadingIcon = {
-                    Icon(
-                        Icons.Outlined.Clear,
-                        contentDescription = null
-                    )
-                }
-            )
-        }
 
         Modal(
             dialogTitle = stringResource(R.string.hive_remove_modal_title),
@@ -183,9 +183,12 @@ fun HiveScreen(
             onConfirmation = {
                 if (hive != null) {
                     hiveViewModel.removeHive(hive)
-                    navController.navigate(Screen.Home.route)
+                    navigator.navigate(
+                        HomeScreenDestination
+                    )
                 }
             },
         )
     }
 }
+

@@ -85,6 +85,10 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3")
 
+    // compose destinations
+    implementation("io.github.raamcosta.compose-destinations:core:1.10.1")
+    ksp("io.github.raamcosta.compose-destinations:ksp:1.10.1")
+
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")

@@ -1,6 +1,5 @@
 package com.example.hiveapp.ui.theme.screens.weatherScreen
 
-import Screen
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.DailyWeather
 import com.example.hiveapp.ui.components.HourlyWeatherSlider
@@ -30,12 +28,21 @@ import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TodayWeather
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import com.example.hiveapp.ui.theme.screens.destinations.AddHiveLocationDestination
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.koinViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
-fun WeatherScreen(navController: NavController, id: Int) {
+fun WeatherScreen(
+    id: Int,
+    navigator: DestinationsNavigator,
+    resultNavigator: ResultBackNavigator<Boolean>
+) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val weatherViewModel: WeatherViewModel = koinViewModel()
 
@@ -50,7 +57,7 @@ fun WeatherScreen(navController: NavController, id: Int) {
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                navController,
+                backNavigation = { resultNavigator.navigateBack(result = true) },
                 scrollBehavior,
                 title = stringResource(R.string.weather_top_title),
                 content = { }
@@ -94,7 +101,11 @@ fun WeatherScreen(navController: NavController, id: Int) {
                 TextButton(
                     modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
                     text = stringResource(R.string.hive_nav_add_geo),
-                    onClick = { navController.navigate("${Screen.AddHiveLocation.route}/${id}?lat=${54.749054}&lng=${18.3732243}") }
+                    onClick = {
+                        navigator.navigate(
+                            AddHiveLocationDestination(id, 54.749054, 18.3732243)
+                        )
+                    }
                 )
             } else {
                 Text(

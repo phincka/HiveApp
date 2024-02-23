@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.TopBar
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -31,17 +30,20 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.result.ResultBackNavigator
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Destination
 @Composable
 fun AddHiveLocation(
-    navController: NavController,
     id: Int,
     lat: Double,
-    lng: Double
+    lng: Double,
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
@@ -61,7 +63,7 @@ fun AddHiveLocation(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                navController,
+                backNavigation = { resultNavigator.navigateBack(result = true) },
                 scrollBehavior,
                 title = stringResource(R.string.add_hive_location_title),
                 content = { }
