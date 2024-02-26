@@ -5,14 +5,15 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.MainActivity
+import org.koin.core.annotation.Single
 
+@Single
 class NotificationService(
     private val context: Context
 ) {

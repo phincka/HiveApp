@@ -6,7 +6,9 @@ import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.data.remote.weather.RemoteSource
 import com.example.hiveapp.data.util.Resource
 import com.example.hiveapp.data.util.toWeatherInfo
+import org.koin.core.annotation.Single
 
+@Single
 class WeatherRepository {
     private val api = RemoteSource.api
 

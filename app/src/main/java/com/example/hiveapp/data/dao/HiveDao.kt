@@ -21,10 +21,10 @@ interface HiveDao {
     suspend fun deleteHives(hives: List<HiveModel>)
 
     @Query("SELECT * FROM hive_table")
-    fun getAllHives(): Flow<List<HiveModel>>
+    suspend fun getAllHives(): List<HiveModel>
 
     @Query("SELECT * FROM hive_table WHERE id = :id")
-    fun getHiveById(id: Int): Flow<List<HiveModel>>
+    suspend fun getHiveById(id: Int): List<HiveModel>
 
     @Query("SELECT id, name, lat, lng FROM hive_table WHERE lat > 0 AND lng > 0")
     fun getHivesLocations(): Flow<List<HiveLocationModel>>

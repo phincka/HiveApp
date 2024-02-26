@@ -5,10 +5,11 @@
     <string name="home_top_bar_title">HiveApp</string>
     <string name="home_floating_action_button">Dodaj ul</string>
     <string name="home_no_hives">Brak dostępnych uli. Musisz najpierw dodać ul.</string>
+    <string name="home_loading">Ładownie…</string>
     <!-- Home screen end -->
 
     <!-- Hive screen start -->
-    <string name="hive_top_bar_title">Ul: </string>
+    <string name="hive_top_bar_title">Ul</string>
     <string name="home_no_hive">Ul o podanym ID nie istnieje</string>
     <string name="hive_tab_name_summary">Podsumowanie</string>
     <string name="hive_tab_name_info">Informacje</string>
@@ -60,7 +61,7 @@
     <!-- Create hive screen end -->
 
     <!-- Notifications channels start -->
-    <string name="notification_channel_title">Główny kanał powiadomień</string>
+    <string name="notification_channel_title">Nowy kanał powiadomień</string>
     <string name="notification_channel_desscription">Lorem impsum</string>
     <!-- Notifications channels start -->
 

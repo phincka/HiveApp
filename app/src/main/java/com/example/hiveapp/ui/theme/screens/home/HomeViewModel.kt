@@ -1,23 +1,32 @@
 package com.example.hiveapp.ui.theme.screens.home
 
 import androidx.lifecycle.ViewModel
-import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.data.repository.HiveRepository
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.viewModelScope
+import com.example.hiveapp.domain.usecase.GetAllHivesUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class HomeViewModel(
-    hiveRepository: HiveRepository
+    private val getAllHivesUseCase: GetAllHivesUseCase
 ) : ViewModel() {
-    val getAllHives: Flow<List<HiveModel>> = hiveRepository.getAllHives()
+    private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Loading)
+    val homeState: StateFlow<HomeState> = _state
 
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun getWeather(lat: Double, lng: Double) = viewModelScope.launch {
-//        val remote = weatherRepository.getWeatherData(lat, lng)
-//
-//        if (!remote.data.isNullOrEmpty()) {
-//            println("-------------------------------")
-//            println(remote.data[0]?.get(0)?.weatherType?.weatherDesc)
-//            println("-------------------------------")
-//        }
-//    }
+    init {
+        getAllHives()
+    }
+
+    private fun getAllHives() {
+        viewModelScope.launch {
+            try {
+                val hives = getAllHivesUseCase()
+                _state.value = HomeState.Success(hives)
+            } catch (e: Exception) {
+                _state.value = HomeState.Error("Failed: ${e.message}")
+            }
+        }
+    }
 }

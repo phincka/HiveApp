@@ -5,7 +5,9 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import com.example.hiveapp.R
+import org.koin.core.annotation.Single
 
+@Single
 class NotificationChannels(
     private val context: Context
 ){

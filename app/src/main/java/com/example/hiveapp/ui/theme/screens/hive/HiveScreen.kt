@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,10 +18,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -57,28 +56,16 @@ fun HiveScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val hiveViewModel: HiveViewModel = koinViewModel()
-
-    val hiveList by hiveViewModel.getHiveById(id).collectAsState(initial = emptyList())
-    val hive = hiveList.firstOrNull()
+    val hiveState by hiveViewModel.hiveState.collectAsState()
 
     val notificationService = get<NotificationService>()
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
     var isModalActive by remember { mutableStateOf(false) }
 
+    var locationButtonTextId by remember { mutableIntStateOf(R.string.hive_nav_add_geo) }
     var lat by remember { mutableDoubleStateOf(54.749054) }
     var lng by remember { mutableDoubleStateOf(18.3732243) }
-
-    if (hive != null && hive.lat > 0 && hive.lng > 0) {
-        lat = hive.lat
-        lng = hive.lng
-    }
-
-    if (hive?.lat == 0.0) {
-        LaunchedEffect(Unit) {
-            notificationService.showGeoNotification()
-        }
-    }
 
     val menuItems = listOf(
         DropdownMenuItemData(
@@ -104,13 +91,19 @@ fun HiveScreen(
         ),
     )
 
+    if (hiveViewModel.removeState) {
+        navigator.navigate(
+            HomeScreenDestination
+        )
+    }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
                 backNavigation = { resultNavigator.navigateBack(result = true) },
                 scrollBehavior = scrollBehavior,
-                title = "${stringResource(R.string.hive_top_bar_title)} ${hive?.name.orEmpty()}",
+                title = stringResource(R.string.hive_top_bar_title),
                 content = {
                     IconButton(onClick = { isDropdownMenuVisible = true }) {
                         Icon(
@@ -135,60 +128,70 @@ fun HiveScreen(
                 ),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            if (hive !== null) {
-                Text(
-                    text = hive.name,
-                    style = Typography.titleLarge,
-                )
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        navigator.navigate(
-                            AddHiveLocationDestination(id, lat, lng)
-                        )
-                    }
-                ) {
+            when (hiveState) {
+                is HiveState.Success -> {
+                    val hive = (hiveState as HiveState.Success).hive
+
                     if (hive.lat > 0 && hive.lng > 0) {
-                        Text(stringResource(R.string.hive_nav_update_geo))
+                        lat = hive.lat
+                        lng = hive.lng
+                        locationButtonTextId = R.string.hive_nav_update_geo
                     } else {
-                        Text(stringResource(R.string.hive_nav_add_geo))
+                        notificationService.showGeoNotification()
                     }
-                }
-                TextButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = stringResource(R.string.hive_nav_show_weather),
-                    onClick = {
-                        navigator.navigate(
-                            WeatherScreenDestination(id)
-                        )
-                    }
-                )
-            } else {
-                Text(stringResource(R.string.home_no_hive))
-            }
-        }
 
-        Dropdown(
-            isDropdownMenuVisible = isDropdownMenuVisible,
-            setDropdownMenuVisible = { isDropdownMenuVisible = it },
-            menuItems = menuItems
-        )
+                    Text(
+                        text = hive.name,
+                        style = Typography.titleLarge,
+                    )
 
-        Modal(
-            dialogTitle = stringResource(R.string.hive_remove_modal_title),
-            dialogText = stringResource(R.string.hive_remove_modal_text),
-            icon = Icons.Filled.Warning,
-            isModalActive = isModalActive,
-            onDismissRequest = { isModalActive = false },
-            onConfirmation = {
-                if (hive != null) {
-                    hiveViewModel.removeHive(hive)
-                    navigator.navigate(
-                        HomeScreenDestination
+                    TextButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(locationButtonTextId),
+                        onClick = {
+                            navigator.navigate(
+                                AddHiveLocationDestination(id, lat, lng)
+                            )
+                        }
+                    )
+
+                    TextButton(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = stringResource(R.string.hive_nav_show_weather),
+                        onClick = {
+                            navigator.navigate(
+                                WeatherScreenDestination(id)
+                            )
+                        }
+                    )
+
+                    Dropdown(
+                        isDropdownMenuVisible = isDropdownMenuVisible,
+                        setDropdownMenuVisible = { isDropdownMenuVisible = it },
+                        menuItems = menuItems
+                    )
+
+                    Modal(
+                        dialogTitle = stringResource(R.string.hive_remove_modal_title),
+                        dialogText = stringResource(R.string.hive_remove_modal_text),
+                        icon = Icons.Filled.Warning,
+                        isModalActive = isModalActive,
+                        onDismissRequest = { isModalActive = false },
+                        onConfirmation = {
+                            hiveViewModel.removeHive(listOf(hive))
+                        },
                     )
                 }
-            },
-        )
+
+                is HiveState.Error -> {
+                    val errorMessage = (hiveState as HiveState.Error).message
+                    Text(errorMessage)
+                }
+
+                is HiveState.Loading -> {
+                    Text(stringResource(R.string.home_loading))
+                }
+            }
+        }
     }
 }
-

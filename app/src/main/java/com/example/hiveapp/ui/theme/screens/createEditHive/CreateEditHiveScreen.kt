@@ -31,7 +31,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.HiveModel
 import com.example.hiveapp.notifications.NotificationService
@@ -39,7 +38,9 @@ import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
@@ -48,7 +49,7 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun CreateEditHiveScreen(
-    navController: NavController,
+    navigator: DestinationsNavigator,
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -248,8 +249,7 @@ fun CreateEditHiveScreen(
                         year,
                         state,
                         notificationService,
-                        navController,
-//                        moveRoute
+                        navigator,
                     )
                 }
             )
@@ -265,8 +265,7 @@ fun handleCreateEditHive(
     year: Int,
     state: Int,
     notificationService: NotificationService,
-    navController: NavController,
-//    moveRoute: String
+    navigator: DestinationsNavigator,
 ) {
     viewModel.insertHive(
         HiveModel(
@@ -288,7 +287,9 @@ fun handleCreateEditHive(
     )
 
     notificationService.showCreateNotification()
-//    navController.navigate(moveRoute)
+    navigator.navigate(
+        HomeScreenDestination
+    )
 }
 
 object DataConstants {

@@ -12,7 +12,9 @@ import com.example.hiveapp.data.repository.HiveRepository
 import com.example.hiveapp.data.repository.WeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class WeatherViewModel(
     private val hiveRepository: HiveRepository,
     private val weatherRepository: WeatherRepository

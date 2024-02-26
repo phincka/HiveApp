@@ -10,7 +10,9 @@ import com.example.hiveapp.data.repository.HiveRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import org.koin.android.annotation.KoinViewModel
 
+@KoinViewModel
 class AddHiveLocationViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
     val getHivesLocations: Flow<List<HiveLocationModel>> = hiveRepository.getHivesLocations()
     var mapState by mutableStateOf(MapState())

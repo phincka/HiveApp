@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.TopBar
@@ -38,8 +37,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    val hives by homeViewModel.getAllHives.collectAsState(emptyList())
+    val homeState by homeViewModel.homeState.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -71,13 +69,18 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(innerPadding)
         ) {
-            if (hives.isNotEmpty()) {
-                HivesLazyColumn(hives, navigator)
-            } else {
-                Text(
-                    text = stringResource(R.string.home_no_hives),
-                    modifier = Modifier.padding(horizontal = 24.dp)
-                )
+            when (homeState) {
+                is HomeState.Success -> {
+                    val hives = (homeState as HomeState.Success).hives
+                    HivesLazyColumn(hives, navigator)
+                }
+                is HomeState.Error -> {
+                    val errorMessage = (homeState as HomeState.Error).message
+                    Text(errorMessage)
+                }
+                is HomeState.Loading -> {
+                    Text(stringResource(R.string.home_loading))
+                }
             }
         }
     }

@@ -60,6 +60,11 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
+    sourceSets {
+        getByName("main").java.srcDirs("src/main/kotlin")
+    }
+
 }
 
 dependencies {
@@ -70,6 +75,8 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.5.3")
     implementation("io.insert-koin:koin-androidx-compose:3.5.3")
     implementation("io.insert-koin:koin-androidx-compose-navigation:3.5.3")
+    implementation("io.insert-koin:koin-annotations:1.3.1")
+    ksp("io.insert-koin:koin-ksp-compiler:1.3.1")
 
     // Compose dependencies
     // Google Maps
