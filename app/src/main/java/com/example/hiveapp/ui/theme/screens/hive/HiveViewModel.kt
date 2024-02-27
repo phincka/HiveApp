@@ -7,8 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.domain.usecase.DeleteHivesUseCase
-import com.example.hiveapp.domain.usecase.GetHiveByIdUseCase
+import com.example.hiveapp.domain.hive.DeleteHivesUseCase
+import com.example.hiveapp.domain.hive.GetHiveByIdUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

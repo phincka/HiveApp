@@ -1,31 +1,27 @@
 package com.example.hiveapp.data.util
 
-import android.os.Build
 import androidx.annotation.DrawableRes
-import androidx.annotation.RequiresApi
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.data.remote.weather.WeatherDataDto
 import com.example.hiveapp.data.remote.weather.WeatherDto
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 private data class IndexedWeatherData(
     val index: Int,
     val data: WeatherModel
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherModel>> {
     return time.mapIndexed { index, time ->
         val temperature = temperatures[index]
         val weatherCode = weatherCodes[index]
         val pressure = pressures[index]
         val humidity = humidities[index]
+
         IndexedWeatherData(
             index = index,
             data = WeatherModel(
-                time = LocalDateTime.parse(time, DateTimeFormatter.ISO_DATE_TIME),
+                time = time,
                 temperatureCelsius = temperature,
                 pressure = pressure,
                 humidity = humidity,
@@ -39,7 +35,6 @@ fun WeatherDataDto.toWeatherDataMap(): Map<Int, List<WeatherModel>> {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun WeatherDto.toWeatherInfo(): Map<Int, List<WeatherModel>> {
     return weatherData.toWeatherDataMap()
 }

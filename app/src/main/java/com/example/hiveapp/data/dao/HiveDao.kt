@@ -7,7 +7,6 @@ import androidx.room.Query
 import androidx.room.Update
 import com.example.hiveapp.data.model.HiveLocationModel
 import com.example.hiveapp.data.model.HiveModel
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface HiveDao {
@@ -27,10 +26,10 @@ interface HiveDao {
     suspend fun getHiveById(id: Int): List<HiveModel>
 
     @Query("SELECT id, name, lat, lng FROM hive_table WHERE lat > 0 AND lng > 0")
-    fun getHivesLocations(): Flow<List<HiveLocationModel>>
+    suspend fun getHivesLocations(): List<HiveLocationModel>
 
     @Query("SELECT id, name, lat, lng FROM hive_table WHERE id = :id")
-    fun getLocationByHiveId(id: Int): Flow<List<HiveLocationModel>>
+    suspend fun getLocationByHiveId(id: Int): List<HiveLocationModel>
 
     @Query("UPDATE hive_table SET lat = :lat, lng = :lng WHERE id = :id")
     fun updateHiveLocation(id: Int, lat: Double, lng: Double)

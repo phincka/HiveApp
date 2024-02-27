@@ -15,12 +15,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.ui.theme.Typography
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun WeatherCard(
     weather: WeatherModel,
     modifier: Modifier
 ) {
+    val localDateTime = LocalDateTime.parse(weather.time)
+    val hour = localDateTime.hour
+    val minute = localDateTime.minute
+
     Card(
         modifier = modifier,
     ) {
@@ -28,7 +33,7 @@ fun WeatherCard(
             modifier = Modifier.padding(24.dp),
         ) {
             Text(
-                text = weather.time.toString(),
+                text = "${hour}:${minute}",
                 textAlign = TextAlign.Center,
                 style = Typography.titleSmall,
                 modifier = Modifier.fillMaxWidth()

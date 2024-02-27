@@ -1,11 +1,9 @@
 package com.example.hiveapp.ui.theme.screens.weatherScreen
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,17 +22,14 @@ import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.DailyWeather
 import com.example.hiveapp.ui.components.HourlyWeatherSlider
-import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TodayWeather
 import com.example.hiveapp.ui.components.TopBar
-import com.example.hiveapp.ui.theme.Typography
-import com.example.hiveapp.ui.theme.screens.destinations.AddHiveLocationDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.koinViewModel
 
-@RequiresApi(Build.VERSION_CODES.O)
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
@@ -45,13 +40,7 @@ fun WeatherScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val weatherViewModel: WeatherViewModel = koinViewModel()
-
-    val hiveList by weatherViewModel.getLocationByHiveId(id).collectAsState(initial = emptyList())
-    val hive = hiveList.firstOrNull()
-
-    if (hive != null && hive.lat > 0.0 && hive.lng > 0.0) {
-        weatherViewModel.getWeather(hive.lat, hive.lng)
-    }
+    val weatherState by weatherViewModel.weatherState.collectAsState()
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -80,38 +69,23 @@ fun WeatherScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            if (weatherViewModel.weatherState.loading == false) {
-                if (weatherViewModel.weatherState.today !== null) {
-                    TodayWeather(weatherViewModel.weatherState.today!!)
-                }
-                if (weatherViewModel.weatherState.hourly !== null) {
-                    val hourly = weatherViewModel.weatherState.hourly!!
-                    HourlyWeatherSlider(hourly)
-                }
-                if (weatherViewModel.weatherState.daily !== null) {
-                    val daily = weatherViewModel.weatherState.daily!!
-                    DailyWeather(daily)
-                }
-            } else if (hive != null && hive.lat == 0.0 && hive.lng == 0.0) {
-                Text(
-                    text = stringResource(R.string.weather_screen_no_location),
-                    style = Typography.titleMedium,
-                )
+            when (weatherState) {
+                is WeatherState.Success -> {
+                    val today = (weatherState as WeatherState.Success).today
+                    val hourly = (weatherState as WeatherState.Success).hourly
+                    val daily = (weatherState as WeatherState.Success).daily
 
-                TextButton(
-                    modifier = Modifier.fillMaxWidth().padding(top = 10.dp),
-                    text = stringResource(R.string.hive_nav_add_geo),
-                    onClick = {
-                        navigator.navigate(
-                            AddHiveLocationDestination(id, 54.749054, 18.3732243)
-                        )
-                    }
-                )
-            } else {
-                Text(
-                    text = stringResource(R.string.weather_screen_loading),
-                    style = Typography.titleLarge,
-                )
+                    TodayWeather(today!!)
+                    HourlyWeatherSlider(hourly!!)
+                    DailyWeather(daily!!)
+                }
+                is WeatherState.Error -> {
+                    val errorMessage = (weatherState as WeatherState.Error).message
+                    Text(errorMessage)
+                }
+                is WeatherState.Loading -> {
+                    Text(stringResource(R.string.home_loading))
+                }
             }
         }
     }

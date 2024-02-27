@@ -5,22 +5,41 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hiveapp.data.model.HiveLocationModel
-import com.example.hiveapp.data.repository.HiveRepository
+import com.example.hiveapp.domain.location.GetHivesLocationsUseCase
+import com.example.hiveapp.domain.location.UpdateLocationUseCase
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
-class AddHiveLocationViewModel(private val hiveRepository: HiveRepository) : ViewModel() {
-    val getHivesLocations: Flow<List<HiveLocationModel>> = hiveRepository.getHivesLocations()
+class AddHiveLocationViewModel(
+    private val updateLocationUseCase: UpdateLocationUseCase,
+    private val getHivesLocationsUseCase: GetHivesLocationsUseCase
+) : ViewModel() {
+    private val _state: MutableStateFlow<AddHiveLocationState> = MutableStateFlow(AddHiveLocationState.Loading)
+    val addHiveLocationState: StateFlow<AddHiveLocationState> = _state
     var mapState by mutableStateOf(MapState())
 
-    fun updateHiveLocation(id: Int, lat: Double, lng: Double) {
-        CoroutineScope(viewModelScope.coroutineContext).launch {
-            hiveRepository.updateHiveLocation(id, lat, lng)
+    init {
+        getLocationByHiveId()
+    }
+
+    private fun getLocationByHiveId() {
+        viewModelScope.launch {
+            try {
+                val locations = getHivesLocationsUseCase()
+                _state.value = AddHiveLocationState.Success(locations)
+            } catch (e: Exception) {
+                _state.value = AddHiveLocationState.Error("Failed: ${e.message}")
+            }
         }
     }
 
+    fun updateHiveLocation(id: Int, lat: Double, lng: Double) {
+        CoroutineScope(viewModelScope.coroutineContext).launch {
+            updateLocationUseCase(id, lat, lng)
+        }
+    }
 }

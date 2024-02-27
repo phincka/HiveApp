@@ -1,4 +1,4 @@
-package com.example.hiveapp.domain.usecase
+package com.example.hiveapp.domain.hive
 
 import com.example.hiveapp.data.model.HiveModel
 import com.example.hiveapp.data.repository.HiveRepository

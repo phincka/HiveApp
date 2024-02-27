@@ -14,9 +14,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.ui.theme.Typography
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun TodayWeather(today: WeatherModel) {
+    val localDateTime = LocalDateTime.parse(today.time)
+    val year = localDateTime.year
+    val month = localDateTime.monthNumber
+    val day = localDateTime.dayOfMonth
+    val hour = localDateTime.hour
+    val minute = localDateTime.minute
+    val parsedDate = "${day}-${month}-${year} | ${hour}:${minute}"
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -29,7 +38,7 @@ fun TodayWeather(today: WeatherModel) {
         )
 
         Text(
-            text = today.time.toString(),
+            text = parsedDate,
             style = Typography.titleSmall,
             textAlign = TextAlign.Center,
             modifier = Modifier

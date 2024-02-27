@@ -4,7 +4,6 @@ import com.example.hiveapp.data.dao.HiveDao
 import com.example.hiveapp.data.model.HiveLocationModel
 import com.example.hiveapp.data.model.HiveModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import org.koin.core.annotation.Single
 
@@ -31,11 +30,11 @@ class HiveRepository(
         hiveDao.deleteHives(hives)
     }
 
-    fun getHivesLocations(): Flow<List<HiveLocationModel>> {
+    suspend fun getHivesLocations(): List<HiveLocationModel> {
         return hiveDao.getHivesLocations()
     }
 
-    fun getLocationByHiveId(id: Int): Flow<List<HiveLocationModel>> {
+    suspend fun getLocationByHiveId(id: Int): List<HiveLocationModel> {
         return hiveDao.getLocationByHiveId(id)
     }
 

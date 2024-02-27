@@ -8,6 +8,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -47,8 +48,7 @@ fun AddHiveLocation(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
-
-    val hivesLocations by addHiveLocationViewModel.getHivesLocations.collectAsState(emptyList())
+    val addHiveLocationState by addHiveLocationViewModel.addHiveLocationState.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(lat, lng), 13f)
@@ -78,53 +78,66 @@ fun AddHiveLocation(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            GoogleMap(
-                modifier = Modifier.fillMaxSize(),
-                properties = addHiveLocationViewModel.mapState.properties,
-                cameraPositionState = cameraPositionState,
-                uiSettings = uiSettings,
-                onMapLongClick = { it ->
-                    if (hivesLocations.any { it.id == id }) {
-                        addHiveLocationViewModel.updateHiveLocation(id, it.latitude, it.longitude)
+            when (addHiveLocationState) {
+                is AddHiveLocationState.Success -> {
+                    val locations = (addHiveLocationState as AddHiveLocationState.Success).locations
 
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "Zmieniono położenie ula",
-                                actionLabel = "Zamknij",
-                                duration = SnackbarDuration.Short
-                            )
+                    GoogleMap(
+                        modifier = Modifier.fillMaxSize(),
+                        properties = addHiveLocationViewModel.mapState.properties,
+                        cameraPositionState = cameraPositionState,
+                        uiSettings = uiSettings,
+                        onMapLongClick = { it ->
+                            if (locations.any { it.id == id }) {
+                                addHiveLocationViewModel.updateHiveLocation(id, it.latitude, it.longitude)
+
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "Zmieniono położenie ula",
+                                        actionLabel = "Zamknij",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                            } else {
+                                addHiveLocationViewModel.updateHiveLocation(id, it.latitude, it.longitude)
+
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "Dodano nową lokalizację ula",
+                                        actionLabel = "Zamknij",
+                                        duration = SnackbarDuration.Short
+                                    )
+                                }
+                            }
                         }
-                    } else {
-                        addHiveLocationViewModel.updateHiveLocation(id, it.latitude, it.longitude)
+                    ) {
+                        locations.forEach { spot ->
+                            Marker(
+                                state = MarkerState(LatLng(spot.lat, spot.lng)),
+                                title = "${stringResource(R.string.add_hive_location_marker_title)} ${spot.name}",
+                                snippet = stringResource(R.string.add_hive_location_marker_snippet),
+                                icon = BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_RED
+                                )
+                            )
 
-                        scope.launch {
-                            snackbarHostState.showSnackbar(
-                                message = "Dodano nową lokalizację ula",
-                                actionLabel = "Zamknij",
-                                duration = SnackbarDuration.Short
+                            Circle(
+                                center = LatLng(spot.lat, spot.lng),
+                                clickable = true,
+                                fillColor = Color.Blue.copy(alpha = 0.3f),
+                                radius = 1500.0,
+                                strokeColor = Color.Black,
+                                strokeWidth = 2f,
                             )
                         }
                     }
                 }
-            ) {
-                hivesLocations.forEach { spot ->
-                    Marker(
-                        state = MarkerState(LatLng(spot.lat, spot.lng)),
-                        title = "${stringResource(R.string.add_hive_location_marker_title)} ${spot.name}",
-                        snippet = stringResource(R.string.add_hive_location_marker_snippet),
-                        icon = BitmapDescriptorFactory.defaultMarker(
-                            BitmapDescriptorFactory.HUE_RED
-                        )
-                    )
-
-                    Circle(
-                        center = LatLng(spot.lat, spot.lng),
-                        clickable = true,
-                        fillColor = Color.Blue.copy(alpha = 0.3f),
-                        radius = 1500.0,
-                        strokeColor = Color.Black,
-                        strokeWidth = 2f,
-                    )
+                is AddHiveLocationState.Error -> {
+                    val errorMessage = (addHiveLocationState as AddHiveLocationState.Error).message
+                    Text(errorMessage)
+                }
+                is AddHiveLocationState.Loading -> {
+                    Text(stringResource(R.string.home_loading))
                 }
             }
         }

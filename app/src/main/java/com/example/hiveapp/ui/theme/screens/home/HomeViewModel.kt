@@ -2,7 +2,7 @@ package com.example.hiveapp.ui.theme.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hiveapp.domain.usecase.GetAllHivesUseCase
+import com.example.hiveapp.domain.hive.GetAllHivesUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

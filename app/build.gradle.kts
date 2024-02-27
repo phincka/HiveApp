@@ -72,6 +72,8 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.5.0")
+
     implementation("io.insert-koin:koin-android:3.5.3")
     implementation("io.insert-koin:koin-androidx-compose:3.5.3")
     implementation("io.insert-koin:koin-androidx-compose-navigation:3.5.3")
