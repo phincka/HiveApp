@@ -1,10 +1,8 @@
-package com.example.hiveapp.domain.weather
+package com.example.hiveapp.domain.usecase.weather
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.hiveapp.data.model.WeatherModel
-import com.example.hiveapp.data.repository.WeatherRepository
 import com.example.hiveapp.data.util.Resource
+import com.example.hiveapp.domain.repository.WeatherRepository
 import org.koin.core.annotation.Single
 
 @Single

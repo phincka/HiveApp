@@ -7,8 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.domain.hive.DeleteHivesUseCase
-import com.example.hiveapp.domain.hive.GetHiveByIdUseCase
+import com.example.hiveapp.domain.usecase.hive.DeleteHivesUseCase
+import com.example.hiveapp.domain.usecase.hive.GetHiveByIdUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,10 +38,10 @@ class HiveViewModel(
     private fun getHiveById(id: Int) {
         viewModelScope.launch {
             try {
-                val hives = getHiveByIdUseCase(id)
+                val hive = getHiveByIdUseCase(id)
 
-                if (hives.isNotEmpty()) {
-                    _state.value = HiveState.Success(hives[0])
+                if (hive != null) {
+                    _state.value = HiveState.Success(hive)
                 } else {
                     _state.value = HiveState.Error("Failed: There is no hive with the given ID")
                 }

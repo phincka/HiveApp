@@ -1,7 +1,7 @@
-package com.example.hiveapp.domain.hive
+package com.example.hiveapp.domain.usecase.hive
 
 import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.data.repository.HiveRepository
+import com.example.hiveapp.domain.repository.HiveRepository
 import org.koin.core.annotation.Single
 
 @Single

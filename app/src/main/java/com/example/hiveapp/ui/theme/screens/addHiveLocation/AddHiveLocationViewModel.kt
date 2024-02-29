@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hiveapp.domain.location.GetHivesLocationsUseCase
-import com.example.hiveapp.domain.location.UpdateLocationUseCase
+import com.example.hiveapp.domain.usecase.location.GetHivesLocationsUseCase
+import com.example.hiveapp.domain.usecase.location.UpdateLocationUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

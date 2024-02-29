@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.HivesLazyColumn
@@ -40,7 +39,6 @@ fun HomeScreen(
     val homeState by homeViewModel.homeState.collectAsState()
 
     Scaffold(
-        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,

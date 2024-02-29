@@ -3,8 +3,8 @@ package com.example.hiveapp.ui.theme.screens.weatherScreen
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.hiveapp.domain.location.GetLocationByHiveIdUseCase
-import com.example.hiveapp.domain.weather.GetWeatherUseCase
+import com.example.hiveapp.domain.usecase.location.GetLocationByHiveIdUseCase
+import com.example.hiveapp.domain.usecase.weather.GetWeatherUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

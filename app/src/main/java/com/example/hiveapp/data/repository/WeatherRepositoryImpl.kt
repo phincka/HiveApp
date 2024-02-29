@@ -4,13 +4,14 @@ import com.example.hiveapp.data.model.WeatherModel
 import com.example.hiveapp.data.remote.weather.RemoteSource
 import com.example.hiveapp.data.util.Resource
 import com.example.hiveapp.data.util.toWeatherInfo
+import com.example.hiveapp.domain.repository.WeatherRepository
 import org.koin.core.annotation.Single
 
 @Single
-class WeatherRepository {
+class WeatherRepositoryImpl : WeatherRepository {
     private val api = RemoteSource.api
 
-    suspend fun getWeatherData(lat: Double, lng: Double): Resource<Map<Int, List<WeatherModel>>> {
+    override suspend fun getWeatherData(lat: Double, lng: Double): Resource<Map<Int, List<WeatherModel>>> {
         return try {
             Resource.Success(
                 data = api.getWeatherData(lat, lng).toWeatherInfo()

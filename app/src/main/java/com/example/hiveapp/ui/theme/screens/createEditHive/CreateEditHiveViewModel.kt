@@ -3,7 +3,7 @@ package com.example.hiveapp.ui.theme.screens.createEditHive
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.domain.hive.CreateHiveUseCase
+import com.example.hiveapp.domain.usecase.hive.CreateHiveUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.android.annotation.KoinViewModel
