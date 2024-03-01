@@ -1,13 +1,16 @@
 package com.example.hiveapp.ui.theme.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -18,15 +21,19 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.hiveapp.R
+import com.example.hiveapp.data.util.AuthState
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.screens.destinations.CreateEditHiveScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.SignInScreenDestination
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
-
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @RootNavGraph(start = true)
 @Destination()
@@ -37,13 +44,49 @@ fun HomeScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val homeState by homeViewModel.homeState.collectAsState()
+    val signOutState = homeViewModel.signOutState.collectAsState()
+    val user = homeViewModel.user.value
+
+
+    println("====================")
+    println(Firebase.auth.currentUser?.uid)
+    println(Firebase.auth.currentUser?.email)
+    println(Firebase.auth.currentUser?.isEmailVerified)
+    println("====================")
+
+    if (user == null) navigator.navigate(SignInScreenDestination)
+
+    when(signOutState.value) {
+        is AuthState.Loading -> Text("Logowanie...")
+
+        is AuthState.Success -> {
+            val success = (signOutState.value as AuthState.Success).success
+            if (success) navigator.navigate(SignInScreenDestination)
+        }
+
+        is AuthState.Error ->  {
+            val errorMessage = (signOutState.value as AuthState.Error).error
+            Text(errorMessage.toString())
+        }
+    }
 
     Scaffold(
         topBar = {
             TopBar(
                 scrollBehavior = scrollBehavior,
                 title = stringResource(R.string.home_top_bar_title),
-                content = {  }
+                content = {
+                    IconButton(
+                        onClick = {
+                            homeViewModel.signOut()
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {
