@@ -23,11 +23,11 @@ import androidx.compose.ui.res.stringResource
 import com.example.hiveapp.R
 import com.example.hiveapp.data.util.AuthState
 import com.example.hiveapp.ui.components.HivesLazyColumn
+import com.example.hiveapp.ui.components.LoadingDialog
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.screens.destinations.CreateEditHiveScreenDestination
 import com.example.hiveapp.ui.theme.screens.destinations.SignInScreenDestination
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.example.hiveapp.ui.theme.screens.destinations.VerifyEmailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -47,17 +47,14 @@ fun HomeScreen(
     val signOutState = homeViewModel.signOutState.collectAsState()
     val user = homeViewModel.user.value
 
-
-    println("====================")
-    println(Firebase.auth.currentUser?.uid)
-    println(Firebase.auth.currentUser?.email)
-    println(Firebase.auth.currentUser?.isEmailVerified)
-    println("====================")
-
-    if (user == null) navigator.navigate(SignInScreenDestination)
+    if (user == null) {
+        navigator.navigate(SignInScreenDestination)
+    } else {
+        if (!user.isEmailVerified) navigator.navigate(VerifyEmailScreenDestination)
+    }
 
     when(signOutState.value) {
-        is AuthState.Loading -> Text("Logowanie...")
+        is AuthState.Loading -> LoadingDialog(stringResource(R.string.home_loading))
 
         is AuthState.Success -> {
             val success = (signOutState.value as AuthState.Success).success
@@ -66,7 +63,7 @@ fun HomeScreen(
 
         is AuthState.Error ->  {
             val errorMessage = (signOutState.value as AuthState.Error).error
-            Text(errorMessage.toString())
+            Text(errorMessage)
         }
     }
 
@@ -119,9 +116,7 @@ fun HomeScreen(
                     val errorMessage = (homeState as HomeState.Error).message
                     Text(errorMessage)
                 }
-                is HomeState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is HomeState.Loading -> LoadingDialog(stringResource(R.string.home_loading))
             }
         }
     }

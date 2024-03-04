@@ -1,6 +1,5 @@
-package com.example.hiveapp.ui.theme.screens.signIn
+package com.example.hiveapp.ui.theme.screens.signUp
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -35,25 +33,24 @@ import com.example.hiveapp.ui.components.LoadingDialog
 import com.example.hiveapp.ui.components.PasswordField
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TextError
-import com.example.hiveapp.ui.components.TextOutlinedButton
 import com.example.hiveapp.ui.theme.Typography
-import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
-import com.example.hiveapp.ui.theme.screens.destinations.SignUpScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.SignInScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.VerifyEmailScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Destination
 @Composable
-fun SignInScreen(
+fun SignUpScreen(
     navigator: DestinationsNavigator,
-    signInViewModel: SignInViewModel = koinViewModel()
+    signUpViewModel: SignUpViewModel = koinViewModel()
 ) {
-    val signInState = signInViewModel.signInState.collectAsState()
+    val signUpState = signUpViewModel.signUpState.collectAsState()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var repeatPassword by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -62,8 +59,10 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+
+
         Text(
-            text = stringResource(R.string.signIn_title),
+            text = stringResource(R.string.signUp_title),
             style = Typography.headlineLarge,
             color = Color.Black,
             textAlign = TextAlign.Center
@@ -75,37 +74,40 @@ fun SignInScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             InputField(
-                label = stringResource(R.string.signIn_form_login),
+                label = stringResource(R.string.signUp_form_login),
                 value = email,
                 setValue = { newValue ->
                     email = newValue
                 },
                 icon = Icons.Default.Email,
             )
-
             PasswordField(
-                label = stringResource(R.string.signIn_form_password),
+                label = stringResource(R.string.signUp_form_password),
                 value = password,
                 setValue = { newValue ->
                     password = newValue
                 },
-                icon = Icons.Default.Lock
+                icon = Icons.Default.Lock,
             )
+
+            PasswordField(
+                label = stringResource(R.string.signUp_form_repeat_password),
+                value = repeatPassword,
+                setValue = { newValue ->
+                    repeatPassword = newValue
+                },
+                icon = Icons.Default.Lock,
+            )
+
         }
 
         Spacer(modifier = Modifier.height(16.dp))
 
         TextButton(
-            text = stringResource(R.string.signIn_login_button),
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { signInViewModel.signIn(email, password) },
-        )
-
-        TextOutlinedButton(
-            text = stringResource(R.string.signIn_register_button),
+            text = stringResource(R.string.signUp_register_button),
             modifier = Modifier.fillMaxWidth(),
             onClick = {
-                navigator.navigate(SignUpScreenDestination)
+                signUpViewModel.signUp(email, password, repeatPassword)
             },
         )
 
@@ -113,29 +115,31 @@ fun SignInScreen(
             modifier = Modifier.padding(top = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Text(stringResource(R.string.signIn_reset_password_text))
+            Text(stringResource(R.string.signUp_reset_password_text))
             Text(
-                text = stringResource(R.string.signIn_reset_password_button),
+                text = stringResource(R.string.signUp_reset_password_button),
                 textDecoration = TextDecoration.Underline,
                 modifier = Modifier.clickable {
-                    // TODO: DODAĆ WIDOK
-                    Log.d("APP_LOG", "TODO RESETUJ HASŁO")
+                    navigator.navigate(SignInScreenDestination)
                 }
             )
         }
 
-        when(signInState.value) {
-            is AuthState.Loading -> LoadingDialog(stringResource(R.string.signIn_title))
+        when(signUpState.value) {
+            is AuthState.Loading -> LoadingDialog(stringResource(R.string.signUp_loading))
 
             is AuthState.Success -> {
-                val success = (signInState.value as AuthState.Success).success
-                if (success) navigator.navigate(HomeScreenDestination)
+                val success = (signUpState.value as AuthState.Success).success
+                if (success) navigator.navigate(VerifyEmailScreenDestination)
             }
 
             is AuthState.Error ->  {
-                val errorMessage = (signInState.value as AuthState.Error).error
+                val errorMessage = (signUpState.value as AuthState.Error).error
                 TextError(errorMessage)
             }
         }
     }
 }
+
+
+

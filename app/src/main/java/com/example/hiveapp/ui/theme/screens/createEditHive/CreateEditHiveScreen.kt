@@ -84,8 +84,8 @@ fun CreateEditHiveScreen(
         var hiveData: HiveModel by remember {
             mutableStateOf(
                 HiveModel(
-                    0,
-                    0,
+                    "",
+                    "0",
                     "",
                     0,
                     0,

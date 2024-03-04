@@ -26,7 +26,7 @@ class HiveViewModel(
     var removeState by mutableStateOf(false)
 
     init {
-        val id = savedStateHandle.get<Int>("id")
+        val id = savedStateHandle.get<String>("id")
 
         if (id != null) {
             getHiveById(id)
@@ -35,7 +35,7 @@ class HiveViewModel(
         }
     }
 
-    private fun getHiveById(id: Int) {
+    private fun getHiveById(id: String) {
         viewModelScope.launch {
             try {
                 val hive = getHiveByIdUseCase(id)

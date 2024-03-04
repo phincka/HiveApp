@@ -8,7 +8,7 @@ package com.example.hiveapp.data.util
 sealed class AuthState {
     data object Loading: AuthState()
 
-    data class Success(val success: Boolean): AuthState()
+    data class Success(val success: Boolean , val message: String = ""): AuthState()
 
-    data class Error(val error: Exception): AuthState()
+    data class Error(val error: String): AuthState()
 }

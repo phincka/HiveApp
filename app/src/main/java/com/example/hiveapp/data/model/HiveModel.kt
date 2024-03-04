@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "hive_table")
 data class HiveModel(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val uId: Int,
+    @PrimaryKey(autoGenerate = false) val id: String,
+    val uId: String,
     val name: String,
     var type: Int,
     val familyType: Int,

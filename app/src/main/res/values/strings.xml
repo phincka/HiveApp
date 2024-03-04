@@ -1,6 +1,47 @@
 <resources>
     <string name="app_name">HiveApp</string>
 
+    <!-- SignIn screen start -->
+    <string name="signIn_title">Logowanie</string>
+    <string name="signIn_form_login">E-mail</string>
+    <string name="signIn_form_password">Hasło</string>
+    <string name="signIn_login_button">Zaloguj się</string>
+    <string name="signIn_register_button">Utwórz konto</string>
+    <string name="signIn_reset_password_text">Nie pamiętasz hasła?</string>
+    <string name="signIn_reset_password_button">Zresetuj hasło</string>
+    <!-- SignIn screen end -->
+
+    <!-- SignUp screen start -->
+    <string name="signUp_title">Rejestracja</string>
+    <string name="signUp_form_login">E-mail</string>
+    <string name="signUp_form_password">Hasło</string>
+    <string name="signUp_form_repeat_password">Powtórz hasło</string>
+    <string name="signUp_register_button">Utwórz konto</string>
+    <string name="signUp_reset_password_text">Masz już konto?</string>
+    <string name="signUp_reset_password_button">Zaloguj się</string>
+    <string name="signUp_loading">Tworzenie konta</string>
+    <!-- SignUp screen end -->
+
+    <!-- Verify Email screen start -->
+    <string name="verify_email_title">Gratulacje!</string>
+    <string name="verify_email_text_1">Twoje konto zostało utworzone. Zanim zaczniesz korzystać z aplikacji, najpierw potwierdź adres E-mail.</string>
+    <string name="verify_email_text_2">Na twój adres E-mail została wysłana wiadomość z linkiem potwierdzającym. Wróć do aplikacji po kliknięciu w link.</string>
+    <string name="verify_email_button_verify">Zweryfikowałem!</string>
+    <string name="verify_email_button_resend">Wyślij ponownie!</string>
+    <string name="verify_email_signout_text">Nie chcesz weryfikować konta?</string>
+    <string name="verify_email_signout_button">Wyloguj się!</string>
+    <!-- Verify Email screen end -->
+
+    <!-- Auth State start -->
+    <string name="auth_state_no_user">Nie znaleziono użytkownika</string>
+    <string name="auth_state_passwords_not_equal">Hasła nie są takie same.</string>
+    <string name="auth_state_verification_error">Nie udało się zweryfikować użytkownika.</string>
+    <string name="auth_state_update_error">Błąd podczas aktualizacji danych:</string>
+    <string name="auth_state_email_send">Wiadomość została wysłana.</string>
+    <string name="auth_state_email_not_send">Błąd podczas wysyłania wiadomości:</string>
+
+    <!-- Auth State screen end -->
+
     <!-- Home screen start -->
     <string name="home_top_bar_title">HiveApp</string>
     <string name="home_floating_action_button">Dodaj ul</string>

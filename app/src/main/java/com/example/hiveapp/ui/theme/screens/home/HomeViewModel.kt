@@ -4,9 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiveapp.data.model.UserModel
 import com.example.hiveapp.data.util.AuthState
+import com.example.hiveapp.domain.usecase.auth.GetCurrentUserUseCase
+import com.example.hiveapp.domain.usecase.auth.SignOutUseCase
 import com.example.hiveapp.domain.usecase.hive.GetAllHivesUseCase
-import com.example.hiveapp.domain.usecase.signin.GetCurrentUserUseCase
-import com.example.hiveapp.domain.usecase.signin.SignOutUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

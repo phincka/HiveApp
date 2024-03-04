@@ -8,7 +8,7 @@ import org.koin.core.annotation.Single
 class GetHiveByIdUseCase(
     private val hiveRepository: HiveRepository
 ) {
-    suspend operator fun invoke(id: Int): HiveModel? {
+    suspend operator fun invoke(id: String): HiveModel? {
         return hiveRepository.getHiveById(id)
     }
 }

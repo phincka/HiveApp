@@ -6,7 +6,7 @@ import com.example.hiveapp.data.model.HiveModel
 interface HiveRepository {
     suspend fun getAllHives(): List<HiveModel>
 
-    suspend fun getHiveById(id: Int): HiveModel?
+    suspend fun getHiveById(id: String): HiveModel?
     suspend fun insertHive(hive: HiveModel)
 
     suspend fun updateHive(hive: HiveModel)

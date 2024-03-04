@@ -1,4 +1,4 @@
-package com.example.hiveapp.domain.usecase.signin
+package com.example.hiveapp.domain.usecase.auth
 
 import com.example.hiveapp.domain.repository.AuthRepository
 import org.koin.core.annotation.Single

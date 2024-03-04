@@ -37,9 +37,7 @@ import com.example.hiveapp.ui.components.Modal
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
-import com.example.hiveapp.ui.theme.screens.destinations.AddHiveLocationDestination
 import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
-import com.example.hiveapp.ui.theme.screens.destinations.WeatherScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
@@ -50,7 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun HiveScreen(
-    id: Int,
+    id: String,
     navigator: DestinationsNavigator,
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
@@ -72,9 +70,9 @@ fun HiveScreen(
             icon = Icons.Outlined.Edit,
             text = stringResource(R.string.hive_nav_add_geo),
             onClick = {
-                navigator.navigate(
-                    AddHiveLocationDestination(id, lat, lng)
-                )
+//                navigator.navigate(
+//                    AddHiveLocationDestination(id, lat, lng)
+//                )
             }
         ),
         DropdownMenuItemData(
@@ -149,9 +147,9 @@ fun HiveScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(locationButtonTextId),
                         onClick = {
-                            navigator.navigate(
-                                AddHiveLocationDestination(id, lat, lng)
-                            )
+//                            navigator.navigate(
+//                                AddHiveLocationDestination(id, lat, lng)
+//                            )
                         }
                     )
 
@@ -159,9 +157,9 @@ fun HiveScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.hive_nav_show_weather),
                         onClick = {
-                            navigator.navigate(
-                                WeatherScreenDestination(id)
-                            )
+//                            navigator.navigate(
+//                                WeatherScreenDestination(id)
+//                            )
                         }
                     )
 

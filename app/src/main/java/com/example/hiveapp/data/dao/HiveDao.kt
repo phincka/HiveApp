@@ -23,7 +23,7 @@ interface HiveDao {
     suspend fun getAllHives(): List<HiveModel>
 
     @Query("SELECT * FROM hive_table WHERE id = :id")
-    suspend fun getHiveById(id: Int): HiveModel?
+    suspend fun getHiveById(id: String): HiveModel?
 
     @Query("SELECT id, name, lat, lng FROM hive_table WHERE lat > 0 AND lng > 0")
     suspend fun getHivesLocations(): List<HiveLocationModel>
