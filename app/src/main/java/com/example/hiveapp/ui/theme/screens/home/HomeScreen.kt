@@ -24,6 +24,7 @@ import com.example.hiveapp.R
 import com.example.hiveapp.data.util.AuthState
 import com.example.hiveapp.ui.components.HivesLazyColumn
 import com.example.hiveapp.ui.components.LoadingDialog
+import com.example.hiveapp.ui.components.TextError
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.screens.destinations.CreateEditHiveScreenDestination
 import com.example.hiveapp.ui.theme.screens.destinations.SignInScreenDestination
@@ -46,6 +47,12 @@ fun HomeScreen(
     val homeState by homeViewModel.homeState.collectAsState()
     val signOutState = homeViewModel.signOutState.collectAsState()
     val user = homeViewModel.user.value
+
+//    println("--------------")
+//    println(stringResource(R.string.default_lat).toDouble())
+//    println(stringResource(R.string.default_lng).toDouble())
+//    println("--------------")
+
 
     if (user == null) {
         navigator.navigate(SignInScreenDestination)
@@ -114,7 +121,7 @@ fun HomeScreen(
                 }
                 is HomeState.Error -> {
                     val errorMessage = (homeState as HomeState.Error).message
-                    Text(errorMessage)
+                    TextError(errorMessage)
                 }
                 is HomeState.Loading -> LoadingDialog(stringResource(R.string.home_loading))
             }

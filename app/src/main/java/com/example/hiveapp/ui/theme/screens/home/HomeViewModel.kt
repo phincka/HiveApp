@@ -37,9 +37,7 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 val user = getCurrentUserUseCase()
-                if (user != null) {
-                    _user.value = user
-                }
+                if (user != null) _user.value = user
             } catch (e: Exception) {
                 _user.value = null
             }

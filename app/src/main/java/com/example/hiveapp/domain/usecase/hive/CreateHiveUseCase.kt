@@ -8,7 +8,5 @@ import org.koin.core.annotation.Single
 class CreateHiveUseCase(
     private val hiveRepository: HiveRepository
 ) {
-    suspend operator fun invoke(hive: HiveModel) {
-        hiveRepository.insertHive(hive)
-    }
+    suspend operator fun invoke(hive: HiveModel) = hiveRepository.insertHive(hive)
 }

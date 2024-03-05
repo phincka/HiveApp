@@ -39,8 +39,12 @@
     <string name="auth_state_update_error">Błąd podczas aktualizacji danych:</string>
     <string name="auth_state_email_send">Wiadomość została wysłana.</string>
     <string name="auth_state_email_not_send">Błąd podczas wysyłania wiadomości:</string>
-
     <!-- Auth State screen end -->
+
+    <!-- Hive State start -->
+    <string name="hive_state_no_user">Nie znaleziono użytkownika</string>
+    <string name="hive_state_creating_error">Błąd podczas dodawania ula:</string>
+    <!-- Hive State screen end -->
 
     <!-- Home screen start -->
     <string name="home_top_bar_title">HiveApp</string>
@@ -62,6 +66,7 @@
     <string name="hive_nav_remove_hive">Usuń!</string>
     <string name="hive_remove_modal_title">Usuń ul</string>
     <string name="hive_remove_modal_text">Czy na pewno chcesz usunąć ul?</string>
+    <string name="hive_loading">Ładownie…</string>
     <!-- Hive screen end -->
 
     <!-- Create hive screen start -->
@@ -86,6 +91,7 @@
     <string name="add_hive_location_snackbar_close">Zamknij</string>
     <string name="add_hive_location_marker_title">Ul: </string>
     <string name="add_hive_location_marker_snippet">Najlepszy zasięg lotu pszczoły: 1,5km.</string>
+    <string name="add_hive_location_loading">Ładownie…</string>
     <!-- Add hive location screen end -->
 
     <!-- Weather screen start -->

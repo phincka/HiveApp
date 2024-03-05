@@ -1,5 +1,6 @@
 package com.example.hiveapp.ui.theme.screens.hive
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -31,17 +33,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.data.util.DropdownMenuItemData
-import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.Dropdown
+import com.example.hiveapp.ui.components.LoadingDialog
 import com.example.hiveapp.ui.components.Modal
 import com.example.hiveapp.ui.components.TextButton
+import com.example.hiveapp.ui.components.TextError
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
+import com.example.hiveapp.ui.theme.screens.destinations.AddHiveLocationDestination
 import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.WeatherScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +60,7 @@ fun HiveScreen(
     val hiveViewModel: HiveViewModel = koinViewModel()
     val hiveState by hiveViewModel.hiveState.collectAsState()
 
-    val notificationService = get<NotificationService>()
+//    val notificationService = get<NotificationService>()
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
     var isModalActive by remember { mutableStateOf(false) }
@@ -70,9 +74,9 @@ fun HiveScreen(
             icon = Icons.Outlined.Edit,
             text = stringResource(R.string.hive_nav_add_geo),
             onClick = {
-//                navigator.navigate(
-//                    AddHiveLocationDestination(id, lat, lng)
-//                )
+                navigator.navigate(
+                    AddHiveLocationDestination(id, lat, lng)
+                )
             }
         ),
         DropdownMenuItemData(
@@ -95,11 +99,16 @@ fun HiveScreen(
         )
     }
 
+    LaunchedEffect(Unit) {
+        Log.d("APP_LOG", "Updated hive data")
+        hiveViewModel.getHiveById(id)
+    }
+
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             TopBar(
-                backNavigation = { resultNavigator.navigateBack(result = true) },
+                backNavigation = { resultNavigator.navigateBack() },
                 scrollBehavior = scrollBehavior,
                 title = stringResource(R.string.hive_top_bar_title),
                 content = {
@@ -116,6 +125,12 @@ fun HiveScreen(
         val topPadding = innerPadding.calculateTopPadding() + 12.dp
         val horizontalPadding = 24.dp
 
+        Dropdown(
+            isDropdownMenuVisible = isDropdownMenuVisible,
+            setDropdownMenuVisible = { isDropdownMenuVisible = it },
+            menuItems = menuItems
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -129,14 +144,16 @@ fun HiveScreen(
             when (hiveState) {
                 is HiveState.Success -> {
                     val hive = (hiveState as HiveState.Success).hive
+                    val hasLocation = (hiveState as HiveState.Success).hasLocation
 
-                    if (hive.lat > 0 && hive.lng > 0) {
+                    if (hasLocation) {
                         lat = hive.lat
                         lng = hive.lng
                         locationButtonTextId = R.string.hive_nav_update_geo
-                    } else {
-                        notificationService.showGeoNotification()
                     }
+//                    else {
+//                        notificationService.showGeoNotification()
+//                    }
 
                     Text(
                         text = hive.name,
@@ -147,9 +164,9 @@ fun HiveScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(locationButtonTextId),
                         onClick = {
-//                            navigator.navigate(
-//                                AddHiveLocationDestination(id, lat, lng)
-//                            )
+                            navigator.navigate(
+                                AddHiveLocationDestination(id, lat, lng)
+                            )
                         }
                     )
 
@@ -157,16 +174,10 @@ fun HiveScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = stringResource(R.string.hive_nav_show_weather),
                         onClick = {
-//                            navigator.navigate(
-//                                WeatherScreenDestination(id)
-//                            )
+                            navigator.navigate(
+                                WeatherScreenDestination(lat, lng, hasLocation)
+                            )
                         }
-                    )
-
-                    Dropdown(
-                        isDropdownMenuVisible = isDropdownMenuVisible,
-                        setDropdownMenuVisible = { isDropdownMenuVisible = it },
-                        menuItems = menuItems
                     )
 
                     Modal(
@@ -176,19 +187,17 @@ fun HiveScreen(
                         isModalActive = isModalActive,
                         onDismissRequest = { isModalActive = false },
                         onConfirmation = {
-                            hiveViewModel.removeHive(listOf(hive))
+                            hiveViewModel.removeHive(id)
                         },
                     )
                 }
 
                 is HiveState.Error -> {
                     val errorMessage = (hiveState as HiveState.Error).message
-                    Text(errorMessage)
+                    TextError(errorMessage)
                 }
 
-                is HiveState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is HiveState.Loading -> LoadingDialog(stringResource(R.string.hive_loading))
             }
         }
     }

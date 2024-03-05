@@ -7,8 +7,6 @@ import org.koin.core.annotation.Single
 class UpdateLocationUseCase(
     private val hiveRepository: HiveRepository
 ) {
-    suspend operator fun invoke(id: Int, lat: Double, lng: Double) {
-        return hiveRepository.updateHiveLocation(id, lat, lng)
-    }
+    suspend operator fun invoke(id: String, lat: Double, lng: Double) = hiveRepository.updateHiveLocation(id, lat, lng)
 }
 

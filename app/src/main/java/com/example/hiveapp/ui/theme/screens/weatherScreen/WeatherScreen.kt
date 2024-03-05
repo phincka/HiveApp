@@ -9,7 +9,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -22,6 +21,8 @@ import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.ui.components.DailyWeather
 import com.example.hiveapp.ui.components.HourlyWeatherSlider
+import com.example.hiveapp.ui.components.LoadingDialog
+import com.example.hiveapp.ui.components.TextError
 import com.example.hiveapp.ui.components.TodayWeather
 import com.example.hiveapp.ui.components.TopBar
 import com.ramcosta.composedestinations.annotation.Destination
@@ -34,8 +35,9 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun WeatherScreen(
-    id: Int,
-    navigator: DestinationsNavigator,
+    lat: Double,
+    lng: Double,
+    hasLocation: Boolean,
     resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -81,11 +83,9 @@ fun WeatherScreen(
                 }
                 is WeatherState.Error -> {
                     val errorMessage = (weatherState as WeatherState.Error).message
-                    Text(errorMessage)
+                    TextError(errorMessage)
                 }
-                is WeatherState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is WeatherState.Loading -> LoadingDialog(stringResource(R.string.weather_screen_loading))
             }
         }
     }
