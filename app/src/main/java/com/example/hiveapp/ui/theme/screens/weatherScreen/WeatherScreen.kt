@@ -14,7 +14,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -25,9 +24,9 @@ import com.example.hiveapp.ui.components.HourlyWeatherSlider
 import com.example.hiveapp.ui.components.TodayWeather
 import com.example.hiveapp.ui.components.TopBar
 import com.ramcosta.composedestinations.annotation.Destination
-import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -35,12 +34,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun WeatherScreen(
     id: Int,
-    navigator: DestinationsNavigator,
-    resultNavigator: ResultBackNavigator<Boolean>
+    resultNavigator: ResultBackNavigator<Boolean>,
+    weatherViewModel: WeatherViewModel = koinViewModel(parameters = { parametersOf(id) })
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val weatherViewModel: WeatherViewModel = koinViewModel()
-    val weatherState by weatherViewModel.weatherState.collectAsState()
+    val weatherState = weatherViewModel.weatherState.collectAsState().value
 
     Scaffold(
         modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -71,17 +69,21 @@ fun WeatherScreen(
         ) {
             when (weatherState) {
                 is WeatherState.Success -> {
-                    val today = (weatherState as WeatherState.Success).today
-                    val hourly = (weatherState as WeatherState.Success).hourly
-                    val daily = (weatherState as WeatherState.Success).daily
+                    val today = weatherState.today
+                    val hourly = weatherState.hourly
+                    val daily = weatherState.daily
 
-                    TodayWeather(today!!)
-                    HourlyWeatherSlider(hourly!!)
-                    DailyWeather(daily!!)
+                    TodayWeather(today)
+                    HourlyWeatherSlider(hourly)
+                    DailyWeather(daily)
                 }
                 is WeatherState.Error -> {
-                    val errorMessage = (weatherState as WeatherState.Error).message
+                    val errorMessage = weatherState.message
                     Text(errorMessage)
+                }
+                is WeatherState.Info -> {
+                    val message = weatherState.message
+                    Text(message)
                 }
                 is WeatherState.Loading -> {
                     Text(stringResource(R.string.home_loading))

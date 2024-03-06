@@ -14,7 +14,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.hiveapp.R
@@ -36,7 +35,7 @@ fun HomeScreen(
     homeViewModel: HomeViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val homeState by homeViewModel.homeState.collectAsState()
+    val homeState = homeViewModel.homeState.collectAsState().value
 
     Scaffold(
         topBar = {
@@ -69,16 +68,14 @@ fun HomeScreen(
         ) {
             when (homeState) {
                 is HomeState.Success -> {
-                    val hives = (homeState as HomeState.Success).hives
+                    val hives = homeState.hives
                     HivesLazyColumn(hives, navigator)
                 }
                 is HomeState.Error -> {
-                    val errorMessage = (homeState as HomeState.Error).message
+                    val errorMessage = homeState.message
                     Text(errorMessage)
                 }
-                is HomeState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is HomeState.Loading -> Text(stringResource(R.string.home_loading))
             }
         }
     }

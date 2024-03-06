@@ -13,7 +13,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -44,11 +43,11 @@ fun AddHiveLocation(
     id: Int,
     lat: Double,
     lng: Double,
-    resultNavigator: ResultBackNavigator<Boolean>
+    resultNavigator: ResultBackNavigator<Boolean>,
+    addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
-    val addHiveLocationState by addHiveLocationViewModel.addHiveLocationState.collectAsState()
+    val addHiveLocationState = addHiveLocationViewModel.addHiveLocationState.collectAsState().value
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(lat, lng), 13f)
@@ -80,7 +79,7 @@ fun AddHiveLocation(
         ) {
             when (addHiveLocationState) {
                 is AddHiveLocationState.Success -> {
-                    val locations = (addHiveLocationState as AddHiveLocationState.Success).locations
+                    val locations = addHiveLocationState.locations
 
                     GoogleMap(
                         modifier = Modifier.fillMaxSize(),
@@ -133,12 +132,10 @@ fun AddHiveLocation(
                     }
                 }
                 is AddHiveLocationState.Error -> {
-                    val errorMessage = (addHiveLocationState as AddHiveLocationState.Error).message
+                    val errorMessage = addHiveLocationState.message
                     Text(errorMessage)
                 }
-                is AddHiveLocationState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is AddHiveLocationState.Loading -> Text(stringResource(R.string.home_loading))
             }
         }
     }

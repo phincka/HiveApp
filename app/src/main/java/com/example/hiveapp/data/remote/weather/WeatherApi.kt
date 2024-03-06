@@ -19,5 +19,5 @@ object RemoteSource {
         .addConverterFactory(MoshiConverterFactory.create())
         .build()
 
-    val api = retrofit.create(WeatherApi::class.java)
+    val api: WeatherApi = retrofit.create(WeatherApi::class.java)
 }

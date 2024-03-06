@@ -33,7 +33,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.HiveModel
-import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.ExposedDropdown
 import com.example.hiveapp.ui.components.TextButton
 import com.example.hiveapp.ui.components.TopBar
@@ -42,7 +41,6 @@ import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,12 +48,10 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CreateEditHiveScreen(
     navigator: DestinationsNavigator,
-    resultNavigator: ResultBackNavigator<Boolean>
+    resultNavigator: ResultBackNavigator<Boolean>,
+    createEditHiveViewModel: CreateEditHiveViewModel = koinViewModel()
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val createEditHiveViewModel: CreateEditHiveViewModel = koinViewModel()
-    val notificationService = get<NotificationService>()
-
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -248,8 +244,8 @@ fun CreateEditHiveScreen(
                         breed,
                         year,
                         state,
-                        notificationService,
                         navigator,
+                        createEditHiveViewModel
                     )
                 }
             )
@@ -264,8 +260,8 @@ fun handleCreateEditHive(
     breed: Int,
     year: Int,
     state: Int,
-    notificationService: NotificationService,
     navigator: DestinationsNavigator,
+    createEditHiveViewModel: CreateEditHiveViewModel
 ) {
     viewModel.insertHive(
         HiveModel(
@@ -286,7 +282,7 @@ fun handleCreateEditHive(
         )
     )
 
-    notificationService.showCreateNotification()
+    createEditHiveViewModel.hiveCreatedNotification()
     navigator.navigate(
         HomeScreenDestination
     )

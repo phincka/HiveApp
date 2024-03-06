@@ -3,14 +3,16 @@ package com.example.hiveapp.data.repository
 import com.example.hiveapp.data.dao.HiveDao
 import com.example.hiveapp.data.model.HiveLocationModel
 import com.example.hiveapp.data.model.HiveModel
+import com.example.hiveapp.di.DISPATCHER_IO
 import com.example.hiveapp.domain.repository.HiveRepository
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
+import org.koin.core.annotation.Named
 import org.koin.core.annotation.Single
 
 @Single
 class HiveRepositoryImpl(
     private val hiveDao: HiveDao,
+    @Named(DISPATCHER_IO)
     private val ioDispatcher: CoroutineDispatcher,
 ): HiveRepository {
     override suspend fun getAllHives(): List<HiveModel> {
@@ -20,15 +22,15 @@ class HiveRepositoryImpl(
     override suspend fun getHiveById(id: Int): HiveModel? {
         return hiveDao.getHiveById(id)
     }
-    override suspend fun insertHive(hive: HiveModel) = withContext(ioDispatcher) {
+    override suspend fun insertHive(hive: HiveModel) {
         hiveDao.insertHive(hive)
     }
 
-    override suspend fun updateHive(hive: HiveModel) = withContext(ioDispatcher) {
+    override suspend fun updateHive(hive: HiveModel) {
         hiveDao.updateHive(hive)
     }
 
-    override suspend fun deleteHives(hives: List<HiveModel>) = withContext(ioDispatcher) {
+    override suspend fun deleteHives(hives: List<HiveModel>) {
         hiveDao.deleteHives(hives)
     }
 
@@ -40,7 +42,7 @@ class HiveRepositoryImpl(
         return hiveDao.getLocationByHiveId(id)
     }
 
-    override suspend fun updateHiveLocation(id: Int, lat: Double, lng: Double) = withContext(ioDispatcher) {
+    override suspend fun updateHiveLocation(id: Int, lat: Double, lng: Double) {
         hiveDao.updateHiveLocation(id, lat, lng)
     }
 }

@@ -32,5 +32,5 @@ interface HiveDao {
     suspend fun getLocationByHiveId(id: Int): List<HiveLocationModel>
 
     @Query("UPDATE hive_table SET lat = :lat, lng = :lng WHERE id = :id")
-    fun updateHiveLocation(id: Int, lat: Double, lng: Double)
+    suspend fun updateHiveLocation(id: Int, lat: Double, lng: Double)
 }

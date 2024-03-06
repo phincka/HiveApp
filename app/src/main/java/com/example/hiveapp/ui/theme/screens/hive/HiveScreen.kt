@@ -1,5 +1,6 @@
 package com.example.hiveapp.ui.theme.screens.hive
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +32,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.data.util.DropdownMenuItemData
-import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.Dropdown
 import com.example.hiveapp.ui.components.Modal
 import com.example.hiveapp.ui.components.TextButton
@@ -43,8 +43,8 @@ import com.example.hiveapp.ui.theme.screens.destinations.WeatherScreenDestinatio
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Destination
@@ -52,13 +52,11 @@ import org.koin.androidx.compose.koinViewModel
 fun HiveScreen(
     id: Int,
     navigator: DestinationsNavigator,
-    resultNavigator: ResultBackNavigator<Boolean>
+    resultNavigator: ResultBackNavigator<Boolean>,
+    hiveViewModel: HiveViewModel = koinViewModel(parameters = { parametersOf(id) })
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val hiveViewModel: HiveViewModel = koinViewModel()
-    val hiveState by hiveViewModel.hiveState.collectAsState()
-
-    val notificationService = get<NotificationService>()
+    val hiveState = hiveViewModel.hiveState.collectAsState().value
 
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
     var isModalActive by remember { mutableStateOf(false) }
@@ -66,6 +64,8 @@ fun HiveScreen(
     var locationButtonTextId by remember { mutableIntStateOf(R.string.hive_nav_add_geo) }
     var lat by remember { mutableDoubleStateOf(54.749054) }
     var lng by remember { mutableDoubleStateOf(18.3732243) }
+
+    Log.d("M_APP", hiveState.toString())
 
     val menuItems = listOf(
         DropdownMenuItemData(
@@ -130,14 +130,14 @@ fun HiveScreen(
         ) {
             when (hiveState) {
                 is HiveState.Success -> {
-                    val hive = (hiveState as HiveState.Success).hive
+                    val hive = hiveState.hive
 
                     if (hive.lat > 0 && hive.lng > 0) {
                         lat = hive.lat
                         lng = hive.lng
                         locationButtonTextId = R.string.hive_nav_update_geo
                     } else {
-                        notificationService.showGeoNotification()
+                        hiveViewModel.hiveCreatedNotification()
                     }
 
                     Text(
@@ -183,14 +183,17 @@ fun HiveScreen(
                     )
                 }
 
+                is HiveState.Info -> {
+                    val message = hiveState.message
+                    Text(message)
+                }
+
                 is HiveState.Error -> {
-                    val errorMessage = (hiveState as HiveState.Error).message
+                    val errorMessage = hiveState.message
                     Text(errorMessage)
                 }
 
-                is HiveState.Loading -> {
-                    Text(stringResource(R.string.home_loading))
-                }
+                is HiveState.Loading -> Text(stringResource(R.string.home_loading))
             }
         }
     }

@@ -27,6 +27,8 @@ class AddHiveLocationViewModel(
     }
 
     private fun getLocationByHiveId() {
+        _state.value = AddHiveLocationState.Loading
+
         viewModelScope.launch {
             try {
                 val locations = getHivesLocationsUseCase()

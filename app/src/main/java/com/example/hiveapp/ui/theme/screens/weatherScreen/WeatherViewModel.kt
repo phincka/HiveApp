@@ -1,6 +1,5 @@
 package com.example.hiveapp.ui.theme.screens.weatherScreen
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.hiveapp.domain.usecase.location.GetLocationByHiveIdUseCase
@@ -12,7 +11,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class WeatherViewModel(
-    savedStateHandle: SavedStateHandle,
+    id: Int,
     private val getLocationByHiveIdUseCase: GetLocationByHiveIdUseCase,
     private val getWeatherUseCase: GetWeatherUseCase
 ) : ViewModel() {
@@ -23,13 +22,8 @@ class WeatherViewModel(
     private val hiveLocationState: StateFlow<HiveLocationState> = _hiveLocationState
 
     init {
-        val id = savedStateHandle.get<Int>("id")
-
-        if (id != null) {
-            getLocationByHiveId(id)
-        } else {
-            _hiveLocationState.value = HiveLocationState.Error("Failed: Hive ID not provided")
-        }
+        _weatherState.value = WeatherState.Loading
+        getLocationByHiveId(id)
 
         viewModelScope.launch {
             hiveLocationState.collect { state ->
@@ -38,8 +32,12 @@ class WeatherViewModel(
                         val hiveLocation = state.hiveLocation
                         getWeather(hiveLocation.lat, hiveLocation.lng)
                     }
-                    is HiveLocationState.Loading -> {
-                        println("ładowanie")
+
+                    is HiveLocationState.Loading -> _weatherState.value = WeatherState.Loading
+
+                    is HiveLocationState.Info -> {
+                        val message = state.message
+                        _weatherState.value = WeatherState.Info(message)
                     }
 
                     is HiveLocationState.Error -> {
@@ -52,6 +50,8 @@ class WeatherViewModel(
     }
 
     private fun getLocationByHiveId(id: Int) {
+        _weatherState.value = WeatherState.Loading
+
         viewModelScope.launch {
             try {
                 val location = getLocationByHiveIdUseCase(id)[0]
@@ -59,7 +59,7 @@ class WeatherViewModel(
                 if (location.lat != 0.0 && location.lng != 0.0) {
                     _hiveLocationState.value = HiveLocationState.Success(location)
                 } else {
-                    _hiveLocationState.value = HiveLocationState.Error("Failed: Hive hasn't location")
+                    _hiveLocationState.value = HiveLocationState.Info("Hive hasn't location")
                 }
             } catch (e: Exception) {
                 _hiveLocationState.value = HiveLocationState.Error("Failed: ${e.message}")
@@ -68,21 +68,11 @@ class WeatherViewModel(
     }
 
     private fun getWeather(lat: Double, lng: Double) {
+        _weatherState.value = WeatherState.Loading
+
         viewModelScope.launch {
             try {
-                val remoteWeatherData = getWeatherUseCase(lat, lng)
-
-                if (!remoteWeatherData.data.isNullOrEmpty()) {
-                    val today = remoteWeatherData.data[0]?.get(11)
-                    val hourly = remoteWeatherData.data[0]
-                    val daily = remoteWeatherData.data.entries.take(12)
-
-                    _weatherState.value = WeatherState.Success(
-                        today = today,
-                        hourly = hourly,
-                        daily = daily,
-                    )
-                }
+                _weatherState.value = getWeatherUseCase(lat, lng)
             } catch (e: Exception) {
                 _weatherState.value = WeatherState.Error("Failed: ${e.message}")
             }
