@@ -8,7 +8,6 @@ import org.koin.core.annotation.Single
 
 @Module
 class DatabaseKoinModule {
-
     @Single
     fun database(context: Context) =
         Room.databaseBuilder(context, HiveDatabase::class.java, "hive-database")

@@ -79,4 +79,53 @@
     <string name="remove_modal_remove">Usuń</string>
     <string name="remove_modal_cancel">Anuluj</string>
     <!-- Remove modal end -->
+
+    <!-- Hive info start -->
+    <string name="queen_state_1">Unasienniona</string>
+    <string name="queen_state_2">Nieunasienniona</string>
+    <string name="queen_breed_1">Krainka</string>
+    <string name="queen_breed_2">Buckfast</string>
+    <string name="queen_breed_3">Włoszka</string>
+    <string name="queen_year_1">Biały</string>
+    <string name="queen_year_2">Żółty</string>
+    <string name="queen_year_3">Czerwony</string>
+    <string name="queen_year_4">Zielony</string>
+    <string name="queen_year_5">Niebieski</string>
+    <string name="queen_family_type_1">Produkcyjna</string>
+    <string name="queen_family_type_2">Odkład</string>
+    <string name="queen_family_type_3">Wychowująca</string>
+    <string name="queen_hive_type_1">Wielkopolski</string>
+    <string name="queen_hive_type_2">Dadant</string>
+    <string name="queen_hive_type_3">Warszawski</string>
+    <!-- Hive info start -->
+
+    <!-- Weather states start -->
+    <string name="weather_state_clear_sky">Czyste niebo</string>
+    <string name="weather_state_mainly_clear">Głównie bezchmurnie</string>
+    <string name="weather_state_partly_cloudy">Częściowo pochmurno`</string>
+    <string name="weather_state_overcast">Zachmurzenie całkowite</string>
+    <string name="weather_state_foggy">Mgliste</string>
+    <string name="weather_state_depositing_rime_fog">Mgła z szadzią</string>
+    <string name="weather_state_light_drizzle">Lekka mżawka</string>
+    <string name="weather_state_moderate_drizzle">Umiarkowana mżawka</string>
+    <string name="weather_state_dense_drizzle">Gęsta mżawka</string>
+    <string name="weather_state_light_freezing_drizzle">Lekkie przymrozki</string>
+    <string name="weather_state_dense_freezing_drizzle">Gęste przymrozki</string>
+    <string name="weather_state_slight_rain">Lekki deszcz</string>
+    <string name="weather_state_moderate_rain">Deszcz</string>
+    <string name="weather_state_heavy_rain">Ulewny deszcz</string>
+    <string name="weather_state_heavy_freezing_rain">Ulewna marznąca deszcz</string>
+    <string name="weather_state_slight_snow_fall">Lekkie opady śnieg</string>
+    <string name="weather_state_moderate_snow_fall">Umiarkowane opady śniegu</string>
+    <string name="weather_state_heavy_snow_fall">Intensywne opady śniegu</string>
+    <string name="weather_state_snow_grains">Śnieg pyłowy</string>
+    <string name="weather_state_slight_rain_showers">Lekkie przelotne opady deszczu</string>
+    <string name="weather_state_moderate_rain_showers">Umiarkowane przelotne opady deszczu</string>
+    <string name="weather_state_violent_rain_showers">Gwałtowne przelotne opady deszcz</string>
+    <string name="weather_state_slight_snow_showers">Lekkie przelotne opady śnieg</string>
+    <string name="weather_state_heavy_snow_showers">Intensywne przelotne opady śniegu</string>
+    <string name="weather_state_moderate_thunderstorm">Umiarkowany burza z piorunami</string>
+    <string name="weather_state_slight_hail_thunderstorm">Burza z piorunami i lekkim gradem</string>
+    <string name="weather_state_heavy_hail_thunderstorm">Burza z piorunami i intensywnym gradem</string>
+    <!-- Weather states start -->
 </resources>

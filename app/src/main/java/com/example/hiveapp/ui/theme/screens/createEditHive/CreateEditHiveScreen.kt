@@ -290,33 +290,33 @@ fun handleCreateEditHive(
 
 object DataConstants {
     val queenState = listOf(
-        "Unasienniona",
-        "Nieunasienniona"
+        R.string.queen_state_1,
+        R.string.queen_state_2,
     )
 
     val queenBreed = listOf(
-        "Krainka",
-        "Buckfast",
-        "Włoszka"
+        R.string.queen_breed_1,
+        R.string.queen_breed_2,
+        R.string.queen_breed_3,
     )
 
     val queenYear = listOf(
-        "Biały",
-        "Żółty",
-        "Czerwony",
-        "Zielony",
-        "Niebieski"
+        R.string.queen_year_1,
+        R.string.queen_year_2,
+        R.string.queen_year_3,
+        R.string.queen_year_4,
+        R.string.queen_year_5,
     )
 
     val familyType = listOf(
-        "Produkcyjna",
-        "Odkład",
-        "Wychowująca"
+        R.string.queen_family_type_1,
+        R.string.queen_family_type_2,
+        R.string.queen_family_type_3,
     )
 
     val hiveType = listOf(
-        "Wielkopolski",
-        "Dadant",
-        "Warszawski"
+        R.string.queen_hive_type_1,
+        R.string.queen_hive_type_2,
+        R.string.queen_hive_type_3,
     )
 }

@@ -1,5 +1,6 @@
 package com.example.hiveapp.data.repository
 
+import android.content.Context
 import com.example.hiveapp.data.dao.HiveDao
 import com.example.hiveapp.data.model.HiveLocationModel
 import com.example.hiveapp.data.model.HiveModel
@@ -12,8 +13,6 @@ import org.koin.core.annotation.Single
 @Single
 class HiveRepositoryImpl(
     private val hiveDao: HiveDao,
-    @Named(DISPATCHER_IO)
-    private val ioDispatcher: CoroutineDispatcher,
 ): HiveRepository {
     override suspend fun getAllHives(): List<HiveModel> {
         return hiveDao.getAllHives()

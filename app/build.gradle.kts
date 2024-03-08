@@ -36,6 +36,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
         debug {
             isMinifyEnabled = false
@@ -97,6 +98,8 @@ dependencies {
     // compose destinations
     implementation("io.github.raamcosta.compose-destinations:core:1.10.1")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.10.1")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.0")
 
     // tests
     testImplementation("junit:junit:4.13.2")

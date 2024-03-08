@@ -7,6 +7,7 @@ interface HiveRepository {
     suspend fun getAllHives(): List<HiveModel>
 
     suspend fun getHiveById(id: Int): HiveModel?
+
     suspend fun insertHive(hive: HiveModel)
 
     suspend fun updateHive(hive: HiveModel)
@@ -14,6 +15,7 @@ interface HiveRepository {
     suspend fun deleteHives(hives: List<HiveModel>)
 
     suspend fun getHivesLocations(): List<HiveLocationModel>
+
     suspend fun getLocationByHiveId(id: Int): List<HiveLocationModel>
 
     suspend fun updateHiveLocation(id: Int, lat: Double, lng: Double)

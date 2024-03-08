@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.data.model.WeatherModel
@@ -46,7 +47,7 @@ fun TodayWeather(today: WeatherModel) {
         )
 
         Text(
-            text = today.weatherType.weatherDesc,
+            text = stringResource(today.weatherType.weatherDesc),
             style = Typography.titleSmall,
             textAlign = TextAlign.Center,
             modifier = Modifier

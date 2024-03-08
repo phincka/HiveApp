@@ -11,8 +11,7 @@ import org.koin.android.annotation.KoinViewModel
 
 @KoinViewModel
 class HomeViewModel(
-    private val getAllHivesUseCase: GetAllHivesUseCase,
-    private val hiveCreatedNotificationUseCase: HiveCreatedNotificationUseCase
+    private val getAllHivesUseCase: GetAllHivesUseCase
 ) : ViewModel() {
     private val _state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Loading)
     val homeState: StateFlow<HomeState> = _state
@@ -27,7 +26,6 @@ class HomeViewModel(
         viewModelScope.launch {
             try {
                 val hives = getAllHivesUseCase()
-                hiveCreatedNotificationUseCase()
 
                 _state.value = HomeState.Success(hives)
             } catch (e: Exception) {

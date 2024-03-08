@@ -65,8 +65,6 @@ fun HiveScreen(
     var lat by remember { mutableDoubleStateOf(54.749054) }
     var lng by remember { mutableDoubleStateOf(18.3732243) }
 
-    Log.d("M_APP", hiveState.toString())
-
     val menuItems = listOf(
         DropdownMenuItemData(
             icon = Icons.Outlined.Edit,
@@ -179,6 +177,7 @@ fun HiveScreen(
                         onDismissRequest = { isModalActive = false },
                         onConfirmation = {
                             hiveViewModel.removeHive(listOf(hive))
+                            navigator.popBackStack()
                         },
                     )
                 }

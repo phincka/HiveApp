@@ -40,141 +40,141 @@ fun WeatherDto.toWeatherInfo(): Map<Int, List<WeatherModel>> {
 }
 
 sealed class WeatherType(
-    val weatherDesc: String,
+    val weatherDesc: Int,
     @DrawableRes val iconRes: Int
 ) {
     data object ClearSky : WeatherType(
-        weatherDesc = "Czyste niebo",
+        weatherDesc = R.string.weather_state_clear_sky,
         iconRes = R.drawable.ic_sunny
     )
 
     data object MainlyClear : WeatherType(
-        weatherDesc = "Głównie bezchmurnie",
+        weatherDesc = R.string.weather_state_mainly_clear,
         iconRes = R.drawable.ic_cloudy
     )
 
     data object PartlyCloudy : WeatherType(
-        weatherDesc = "Częściowo pochmurno",
+        weatherDesc = R.string.weather_state_partly_cloudy,
         iconRes = R.drawable.ic_cloudy
     )
 
     data object Overcast : WeatherType(
-        weatherDesc = "Zachmurzenie całkowite",
+        weatherDesc = R.string.weather_state_overcast,
         iconRes = R.drawable.ic_cloudy
     )
 
     data object Foggy : WeatherType(
-        weatherDesc = "Mgliste",
+        weatherDesc = R.string.weather_state_foggy,
         iconRes = R.drawable.ic_very_cloudy
     )
 
     data object DepositingRimeFog : WeatherType(
-        weatherDesc = "Mgła z szadzią",
+        weatherDesc = R.string.weather_state_depositing_rime_fog,
         iconRes = R.drawable.ic_very_cloudy
     )
 
     data object LightDrizzle : WeatherType(
-        weatherDesc = "Lekka mżawka",
+        weatherDesc = R.string.weather_state_light_drizzle,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object ModerateDrizzle : WeatherType(
-        weatherDesc = "Umiarkowana mżawka",
+        weatherDesc = R.string.weather_state_moderate_drizzle,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object DenseDrizzle : WeatherType(
-        weatherDesc = "Gęsta mżawka",
+        weatherDesc = R.string.weather_state_dense_drizzle,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object LightFreezingDrizzle : WeatherType(
-        weatherDesc = "Lekkie przymrozki",
+        weatherDesc = R.string.weather_state_light_freezing_drizzle,
         iconRes = R.drawable.ic_snowyrainy
     )
 
     data object DenseFreezingDrizzle : WeatherType(
-        weatherDesc = "Gęste przymrozki",
+        weatherDesc = R.string.weather_state_dense_freezing_drizzle,
         iconRes = R.drawable.ic_snowyrainy
     )
 
     data object SlightRain : WeatherType(
-        weatherDesc = "Lekki deszcz",
+        weatherDesc = R.string.weather_state_slight_rain,
         iconRes = R.drawable.ic_rainy
     )
 
     data object ModerateRain : WeatherType(
-        weatherDesc = "Deszcz",
+        weatherDesc = R.string.weather_state_moderate_rain,
         iconRes = R.drawable.ic_rainy
     )
 
     data object HeavyRain : WeatherType(
-        weatherDesc = "Ulewny deszcz",
+        weatherDesc = R.string.weather_state_heavy_rain,
         iconRes = R.drawable.ic_rainy
     )
 
     data object HeavyFreezingRain : WeatherType(
-        weatherDesc = "Ulewna marznąca deszcz",
+        weatherDesc = R.string.weather_state_heavy_freezing_rain,
         iconRes = R.drawable.ic_snowyrainy
     )
 
     data object SlightSnowFall : WeatherType(
-        weatherDesc = "Lekkie opady śniegu",
+        weatherDesc = R.string.weather_state_slight_snow_fall,
         iconRes = R.drawable.ic_snowy
     )
 
     data object ModerateSnowFall : WeatherType(
-        weatherDesc = "Umiarkowane opady śniegu",
+        weatherDesc = R.string.weather_state_moderate_snow_fall,
         iconRes = R.drawable.ic_heavysnow
     )
 
     data object HeavySnowFall : WeatherType(
-        weatherDesc = "Intensywne opady śniegu",
+        weatherDesc = R.string.weather_state_heavy_snow_fall,
         iconRes = R.drawable.ic_heavysnow
     )
 
     data object SnowGrains : WeatherType(
-        weatherDesc = "Śnieg pyłowy",
+        weatherDesc = R.string.weather_state_snow_grains,
         iconRes = R.drawable.ic_heavysnow
     )
 
     data object SlightRainShowers : WeatherType(
-        weatherDesc = "Lekkie przelotne opady deszczu",
+        weatherDesc = R.string.weather_state_slight_rain_showers,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object ModerateRainShowers : WeatherType(
-        weatherDesc = "Umiarkowane przelotne opady deszczu",
+        weatherDesc = R.string.weather_state_moderate_rain_showers,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object ViolentRainShowers : WeatherType(
-        weatherDesc = "Gwałtowne przelotne opady deszczu",
+        weatherDesc = R.string.weather_state_violent_rain_showers,
         iconRes = R.drawable.ic_rainshower
     )
 
     data object SlightSnowShowers : WeatherType(
-        weatherDesc = "Lekkie przelotne opady śniegu",
+        weatherDesc = R.string.weather_state_slight_snow_showers,
         iconRes = R.drawable.ic_snowy
     )
 
     data object HeavySnowShowers : WeatherType(
-        weatherDesc = "Intensywne przelotne opady śniegu",
+        weatherDesc = R.string.weather_state_heavy_snow_showers,
         iconRes = R.drawable.ic_snowy
     )
 
     data object ModerateThunderstorm : WeatherType(
-        weatherDesc = "Umiarkowany burza z piorunami",
+        weatherDesc = R.string.weather_state_moderate_thunderstorm,
         iconRes = R.drawable.ic_thunder
     )
 
     data object SlightHailThunderstorm : WeatherType(
-        weatherDesc = "Burza z piorunami i lekkim gradem",
+        weatherDesc = R.string.weather_state_slight_hail_thunderstorm,
         iconRes = R.drawable.ic_rainythunder
     )
 
     data object HeavyHailThunderstorm : WeatherType(
-        weatherDesc = "Burza z piorunami i intensywnym gradem",
+        weatherDesc = R.string.weather_state_heavy_hail_thunderstorm,
         iconRes = R.drawable.ic_rainythunder
     )
 

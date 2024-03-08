@@ -36,7 +36,7 @@ class NotificationService(
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("APP", context.getString(R.string.notification_no_permission))
+            Log.d("APP_LOG", context.getString(R.string.notification_no_permission))
             return
         }
         notificationManager.notify(1, notification)
@@ -54,7 +54,7 @@ class NotificationService(
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("APP", context.getString(R.string.notification_no_permission))
+            Log.d("APP_LOG", context.getString(R.string.notification_no_permission))
             return
         }
         notificationManager.notify(2, notification)
