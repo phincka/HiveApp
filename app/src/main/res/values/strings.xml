@@ -126,4 +126,9 @@
     <string name="remove_modal_remove">Usuń</string>
     <string name="remove_modal_cancel">Anuluj</string>
     <!-- Remove modal end -->
+
+    <!-- Remove modal start -->
+    <string name="home_screen">Home</string>
+    <string name="hive_screen">Hive</string>
+    <!-- Remove modal end -->
 </resources>
