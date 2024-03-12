@@ -1,6 +1,51 @@
 <resources>
     <string name="app_name">HiveApp</string>
 
+    <!-- SignIn screen start -->
+    <string name="signIn_title">Logowanie</string>
+    <string name="signIn_form_login">E-mail</string>
+    <string name="signIn_form_password">Hasło</string>
+    <string name="signIn_login_button">Zaloguj się</string>
+    <string name="signIn_register_button">Utwórz konto</string>
+    <string name="signIn_reset_password_text">Nie pamiętasz hasła?</string>
+    <string name="signIn_reset_password_button">Zresetuj hasło</string>
+    <!-- SignIn screen end -->
+
+    <!-- SignUp screen start -->
+    <string name="signUp_title">Rejestracja</string>
+    <string name="signUp_form_login">E-mail</string>
+    <string name="signUp_form_password">Hasło</string>
+    <string name="signUp_form_repeat_password">Powtórz hasło</string>
+    <string name="signUp_register_button">Utwórz konto</string>
+    <string name="signUp_reset_password_text">Masz już konto?</string>
+    <string name="signUp_reset_password_button">Zaloguj się</string>
+    <string name="signUp_loading">Tworzenie konta</string>
+    <!-- SignUp screen end -->
+
+    <!-- Verify Email screen start -->
+    <string name="verify_email_title">Gratulacje!</string>
+    <string name="verify_email_text_1">Twoje konto zostało utworzone. Zanim zaczniesz korzystać z aplikacji, najpierw potwierdź adres E-mail.</string>
+    <string name="verify_email_text_2">Na twój adres E-mail została wysłana wiadomość z linkiem potwierdzającym. Wróć do aplikacji po kliknięciu w link.</string>
+    <string name="verify_email_button_verify">Zweryfikowałem!</string>
+    <string name="verify_email_button_resend">Wyślij ponownie!</string>
+    <string name="verify_email_signout_text">Nie chcesz weryfikować konta?</string>
+    <string name="verify_email_signout_button">Wyloguj się!</string>
+    <!-- Verify Email screen end -->
+
+    <!-- Auth State start -->
+    <string name="auth_state_no_user">Nie znaleziono użytkownika</string>
+    <string name="auth_state_passwords_not_equal">Hasła nie są takie same.</string>
+    <string name="auth_state_verification_error">Nie udało się zweryfikować użytkownika.</string>
+    <string name="auth_state_update_error">Błąd podczas aktualizacji danych:</string>
+    <string name="auth_state_email_send">Wiadomość została wysłana.</string>
+    <string name="auth_state_email_not_send">Błąd podczas wysyłania wiadomości:</string>
+    <!-- Auth State screen end -->
+
+    <!-- Hive State start -->
+    <string name="hive_state_no_user">Nie znaleziono użytkownika</string>
+    <string name="hive_state_creating_error">Błąd podczas dodawania ula:</string>
+    <!-- Hive State screen end -->
+
     <!-- Home screen start -->
     <string name="home_top_bar_title">HiveApp</string>
     <string name="home_floating_action_button">Dodaj ul</string>
@@ -21,6 +66,7 @@
     <string name="hive_nav_remove_hive">Usuń!</string>
     <string name="hive_remove_modal_title">Usuń ul</string>
     <string name="hive_remove_modal_text">Czy na pewno chcesz usunąć ul?</string>
+    <string name="hive_loading">Ładownie…</string>
     <!-- Hive screen end -->
 
     <!-- Create hive screen start -->
@@ -45,6 +91,7 @@
     <string name="add_hive_location_snackbar_close">Zamknij</string>
     <string name="add_hive_location_marker_title">Ul: </string>
     <string name="add_hive_location_marker_snippet">Najlepszy zasięg lotu pszczoły: 1,5km.</string>
+    <string name="add_hive_location_loading">Ładownie…</string>
     <!-- Add hive location screen end -->
 
     <!-- Weather screen start -->
@@ -80,52 +127,8 @@
     <string name="remove_modal_cancel">Anuluj</string>
     <!-- Remove modal end -->
 
-    <!-- Hive info start -->
-    <string name="queen_state_1">Unasienniona</string>
-    <string name="queen_state_2">Nieunasienniona</string>
-    <string name="queen_breed_1">Krainka</string>
-    <string name="queen_breed_2">Buckfast</string>
-    <string name="queen_breed_3">Włoszka</string>
-    <string name="queen_year_1">Biały</string>
-    <string name="queen_year_2">Żółty</string>
-    <string name="queen_year_3">Czerwony</string>
-    <string name="queen_year_4">Zielony</string>
-    <string name="queen_year_5">Niebieski</string>
-    <string name="queen_family_type_1">Produkcyjna</string>
-    <string name="queen_family_type_2">Odkład</string>
-    <string name="queen_family_type_3">Wychowująca</string>
-    <string name="queen_hive_type_1">Wielkopolski</string>
-    <string name="queen_hive_type_2">Dadant</string>
-    <string name="queen_hive_type_3">Warszawski</string>
-    <!-- Hive info start -->
-
-    <!-- Weather states start -->
-    <string name="weather_state_clear_sky">Czyste niebo</string>
-    <string name="weather_state_mainly_clear">Głównie bezchmurnie</string>
-    <string name="weather_state_partly_cloudy">Częściowo pochmurno`</string>
-    <string name="weather_state_overcast">Zachmurzenie całkowite</string>
-    <string name="weather_state_foggy">Mgliste</string>
-    <string name="weather_state_depositing_rime_fog">Mgła z szadzią</string>
-    <string name="weather_state_light_drizzle">Lekka mżawka</string>
-    <string name="weather_state_moderate_drizzle">Umiarkowana mżawka</string>
-    <string name="weather_state_dense_drizzle">Gęsta mżawka</string>
-    <string name="weather_state_light_freezing_drizzle">Lekkie przymrozki</string>
-    <string name="weather_state_dense_freezing_drizzle">Gęste przymrozki</string>
-    <string name="weather_state_slight_rain">Lekki deszcz</string>
-    <string name="weather_state_moderate_rain">Deszcz</string>
-    <string name="weather_state_heavy_rain">Ulewny deszcz</string>
-    <string name="weather_state_heavy_freezing_rain">Ulewna marznąca deszcz</string>
-    <string name="weather_state_slight_snow_fall">Lekkie opady śnieg</string>
-    <string name="weather_state_moderate_snow_fall">Umiarkowane opady śniegu</string>
-    <string name="weather_state_heavy_snow_fall">Intensywne opady śniegu</string>
-    <string name="weather_state_snow_grains">Śnieg pyłowy</string>
-    <string name="weather_state_slight_rain_showers">Lekkie przelotne opady deszczu</string>
-    <string name="weather_state_moderate_rain_showers">Umiarkowane przelotne opady deszczu</string>
-    <string name="weather_state_violent_rain_showers">Gwałtowne przelotne opady deszcz</string>
-    <string name="weather_state_slight_snow_showers">Lekkie przelotne opady śnieg</string>
-    <string name="weather_state_heavy_snow_showers">Intensywne przelotne opady śniegu</string>
-    <string name="weather_state_moderate_thunderstorm">Umiarkowany burza z piorunami</string>
-    <string name="weather_state_slight_hail_thunderstorm">Burza z piorunami i lekkim gradem</string>
-    <string name="weather_state_heavy_hail_thunderstorm">Burza z piorunami i intensywnym gradem</string>
-    <!-- Weather states start -->
+    <!-- Remove modal start -->
+    <string name="home_screen">Home</string>
+    <string name="hive_screen">Hive</string>
+    <!-- Remove modal end -->
 </resources>

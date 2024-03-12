@@ -8,11 +8,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -20,6 +20,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import com.example.hiveapp.R
+import com.example.hiveapp.ui.components.LoadingDialog
+import com.example.hiveapp.ui.components.TextError
 import com.example.hiveapp.ui.components.TopBar
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -40,14 +42,14 @@ import org.koin.androidx.compose.koinViewModel
 @Destination
 @Composable
 fun AddHiveLocation(
-    id: Int,
+    id: String,
     lat: Double,
     lng: Double,
-    resultNavigator: ResultBackNavigator<Boolean>,
-    addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val addHiveLocationState = addHiveLocationViewModel.addHiveLocationState.collectAsState().value
+    val addHiveLocationViewModel: AddHiveLocationViewModel = koinViewModel()
+    val addHiveLocationState by addHiveLocationViewModel.addHiveLocationState.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(lat, lng), 13f)
@@ -79,7 +81,7 @@ fun AddHiveLocation(
         ) {
             when (addHiveLocationState) {
                 is AddHiveLocationState.Success -> {
-                    val locations = addHiveLocationState.locations
+                    val locations = (addHiveLocationState as AddHiveLocationState.Success).locations
 
                     GoogleMap(
                         modifier = Modifier.fillMaxSize(),
@@ -131,11 +133,13 @@ fun AddHiveLocation(
                         }
                     }
                 }
+
                 is AddHiveLocationState.Error -> {
-                    val errorMessage = addHiveLocationState.message
-                    Text(errorMessage)
+                    val errorMessage = (addHiveLocationState as AddHiveLocationState.Error).message
+                    TextError(errorMessage)
                 }
-                is AddHiveLocationState.Loading -> Text(stringResource(R.string.home_loading))
+
+                is AddHiveLocationState.Loading -> LoadingDialog(stringResource(R.string.add_hive_location_loading))
             }
         }
     }

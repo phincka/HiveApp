@@ -23,12 +23,10 @@ class AddHiveLocationViewModel(
     var mapState by mutableStateOf(MapState())
 
     init {
-        getLocationByHiveId()
+        getHivesLocations()
     }
 
-    private fun getLocationByHiveId() {
-        _state.value = AddHiveLocationState.Loading
-
+    private fun getHivesLocations() {
         viewModelScope.launch {
             try {
                 val locations = getHivesLocationsUseCase()
@@ -39,9 +37,31 @@ class AddHiveLocationViewModel(
         }
     }
 
-    fun updateHiveLocation(id: Int, lat: Double, lng: Double) {
+    fun updateHiveLocation(
+        id: String,
+        lat: Double,
+        lng: Double,
+    ) {
         CoroutineScope(viewModelScope.coroutineContext).launch {
             updateLocationUseCase(id, lat, lng)
+        }
+        viewModelScope.launch {
+            try {
+                updateLocationUseCase(id, lat, lng)
+
+                val locations = (_state.value as AddHiveLocationState.Success).locations
+                val updatedLocations = locations.map { location ->
+                    if (location.id == id) {
+                        location.copy(lat = lat, lng = lng)
+                    } else {
+                        location
+                    }
+                }
+
+                _state.value = AddHiveLocationState.Success(updatedLocations)
+            } catch (e: Exception) {
+                _state.value = AddHiveLocationState.Error("Failed: ${e.message}")
+            }
         }
     }
 }

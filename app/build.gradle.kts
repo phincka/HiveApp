@@ -8,6 +8,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -87,6 +88,11 @@ dependencies {
     implementation("com.google.maps.android:maps-compose:4.3.0")
     implementation("com.google.android.gms:play-services-maps:18.2.0")
 
+//    Firebase
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation(platform("com.google.firebase:firebase-bom:32.7.3"))
+    implementation("com.google.firebase:firebase-firestore")
+
     implementation("com.google.accompanist:accompanist-pager:0.34.0")
     implementation("com.google.accompanist:accompanist-pager-indicators:0.34.0")
 
@@ -112,6 +118,8 @@ dependencies {
     // android tests
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")

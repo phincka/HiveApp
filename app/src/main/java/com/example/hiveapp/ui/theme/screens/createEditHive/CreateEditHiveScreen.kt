@@ -21,6 +21,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -33,14 +34,19 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.hiveapp.R
 import com.example.hiveapp.data.model.HiveModel
+import com.example.hiveapp.data.util.AuthState
+import com.example.hiveapp.notifications.NotificationService
 import com.example.hiveapp.ui.components.ExposedDropdown
+import com.example.hiveapp.ui.components.LoadingDialog
 import com.example.hiveapp.ui.components.TextButton
+import com.example.hiveapp.ui.components.TextError
 import com.example.hiveapp.ui.components.TopBar
 import com.example.hiveapp.ui.theme.Typography
-import com.example.hiveapp.ui.theme.screens.destinations.HomeScreenDestination
+import com.example.hiveapp.ui.theme.screens.destinations.HiveScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import com.ramcosta.composedestinations.result.ResultBackNavigator
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,10 +54,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CreateEditHiveScreen(
     navigator: DestinationsNavigator,
-    resultNavigator: ResultBackNavigator<Boolean>,
-    createEditHiveViewModel: CreateEditHiveViewModel = koinViewModel()
+    resultNavigator: ResultBackNavigator<Boolean>
 ) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
+    val createEditHiveViewModel: CreateEditHiveViewModel = koinViewModel()
+
+    val createHiveState = createEditHiveViewModel.createHiveState.collectAsState()
+
+
+    val notificationService = get<NotificationService>()
+
     var isDropdownMenuVisible by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -80,8 +92,8 @@ fun CreateEditHiveScreen(
         var hiveData: HiveModel by remember {
             mutableStateOf(
                 HiveModel(
-                    0,
-                    0,
+                    "",
+                    "0",
                     "",
                     0,
                     0,
@@ -243,12 +255,25 @@ fun CreateEditHiveScreen(
                         type,
                         breed,
                         year,
-                        state,
-                        navigator,
-                        createEditHiveViewModel
+                        state
                     )
                 }
             )
+
+            when(createHiveState.value) {
+                is AuthState.Loading -> LoadingDialog(stringResource(R.string.signUp_loading))
+
+                is AuthState.Success -> {
+                    val success = (createHiveState.value as AuthState.Success).success
+                    val message = (createHiveState.value as AuthState.Success).message
+                    if (success) navigator.navigate(HiveScreenDestination(message))
+                }
+
+                is AuthState.Error ->  {
+                    val errorMessage = (createHiveState.value as AuthState.Error).error
+                    TextError(errorMessage)
+                }
+            }
         }
     }
 }
@@ -260,8 +285,6 @@ fun handleCreateEditHive(
     breed: Int,
     year: Int,
     state: Int,
-    navigator: DestinationsNavigator,
-    createEditHiveViewModel: CreateEditHiveViewModel
 ) {
     viewModel.insertHive(
         HiveModel(
@@ -281,42 +304,37 @@ fun handleCreateEditHive(
             hiveData.edited
         )
     )
-
-    createEditHiveViewModel.hiveCreatedNotification()
-    navigator.navigate(
-        HomeScreenDestination
-    )
 }
 
 object DataConstants {
     val queenState = listOf(
-        R.string.queen_state_1,
-        R.string.queen_state_2,
+        "Unasienniona",
+        "Nieunasienniona"
     )
 
     val queenBreed = listOf(
-        R.string.queen_breed_1,
-        R.string.queen_breed_2,
-        R.string.queen_breed_3,
+        "Krainka",
+        "Buckfast",
+        "Włoszka"
     )
 
     val queenYear = listOf(
-        R.string.queen_year_1,
-        R.string.queen_year_2,
-        R.string.queen_year_3,
-        R.string.queen_year_4,
-        R.string.queen_year_5,
+        "Biały",
+        "Żółty",
+        "Czerwony",
+        "Zielony",
+        "Niebieski"
     )
 
     val familyType = listOf(
-        R.string.queen_family_type_1,
-        R.string.queen_family_type_2,
-        R.string.queen_family_type_3,
+        "Produkcyjna",
+        "Odkład",
+        "Wychowująca"
     )
 
     val hiveType = listOf(
-        R.string.queen_hive_type_1,
-        R.string.queen_hive_type_2,
-        R.string.queen_hive_type_3,
+        "Wielkopolski",
+        "Dadant",
+        "Warszawski"
     )
 }
